@@ -26,7 +26,7 @@ export function decryptConfig() {
     fs.writeFileSync(configPath, decrypted);
     console.log('Config decrypted successfully.');
 }
-decryptConfig();
+
 export function cleanupConfig() {
     if (fs.existsSync(configPath)) {
         fs.unlinkSync(configPath);

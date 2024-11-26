@@ -11,9 +11,9 @@ const iv = crypto.randomBytes(16);
 fs.writeFileSync('secret.key', key);
 fs.writeFileSync('iv.key', iv);
 
-const data = fs.readFileSync('../data/config/config.json');
+const data = fs.readFileSync('./data/config/config.json');
 const cipher = crypto.createCipheriv(algorithm, key, iv);
 const encrypted = Buffer.concat([cipher.update(data), cipher.final()]);
 
-fs.writeFileSync('../data/config/config.json.enc', encrypted);
+fs.writeFileSync('./data/config/config.json.enc', encrypted);
 console.log("success");
