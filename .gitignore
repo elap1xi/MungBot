@@ -1,0 +1,7 @@
+/node_modules
+/Test
+/data/security/*.key
+/data/config/config.json
+.env
+
+/archived
