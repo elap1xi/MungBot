@@ -51,6 +51,7 @@ global.SlashCommandBuilder = SlashCommandBuilder;
 global.ModalBuilder = ModalBuilder;
 global.ButtonBuilder = ButtonBuilder;
 global.ButtonStyle = ButtonStyle;
+global.StringSelectMenuBuilder = StringSelectMenuBuilder;
 global.StringSelectMenuOptionBuilder = StringSelectMenuOptionBuilder;
 global.ActionRowBuilder = ActionRowBuilder;
 
