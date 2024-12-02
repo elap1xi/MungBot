@@ -70,9 +70,18 @@ async function execute(message) {
         }
 
         if (message.guildId == "1282967122254762027") {
-            webhookclient_Nam.send({
-                content: `${message.author.username} : ${message.content}`
-            });
+            if (message.attachments.size > 0) {
+                webhookclient_Nam.send({
+                    content: `${message.author.username} : ${message.content}`
+                });
+                webhookclient_Nam.send({
+                    content: `${message.author.username} : ${message.attachments.first().url}`
+                });
+            } else {
+                webhookclient_Nam.send({
+                    content: `${message.author.username} : ${message.content}`
+                });
+            }
         }
 
         // prefix detect
