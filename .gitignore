@@ -1,7 +1,7 @@
 /node_modules
 /Test
-/data/security/*.key
-/data/config/config.json
+/cache
+/data/security/config.json
 .env
 
 /archived

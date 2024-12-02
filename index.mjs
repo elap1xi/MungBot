@@ -26,7 +26,3 @@ get_info.start();
 
 const Token = config.status == "online" ? env.token1 : env.token_test1;
 client.login(Token);
-
-process.on('exit', () => { cleanupConfig(); process.exit(1); });
-process.on('SIGINT', () => { cleanupConfig(); process.exit(1); });
-process.on('uncaughtException', () => { cleanupConfig(); process.exit(1); });

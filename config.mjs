@@ -1,17 +1,13 @@
-import { decryptConfig, cleanupConfig } from './app_command/decryption.mjs';
-decryptConfig();
-global.cleanupConfig = cleanupConfig;
-import fs from 'fs';
-
 // use require of cjs module
 import { createRequire } from "module";
 global.require = createRequire(import.meta.url);
 
 // configuration
-global.config = JSON.parse(fs.readFileSync('./data/config/config.json', 'utf8'));
+global.config = require('./data/security/config.json');
 
 // import module
 global.axios = require('axios');
+import fs from 'fs';
 global.fs = fs;
 global.ytdl = require("@distube/ytdl-core");
 global.cron = require("cron");
