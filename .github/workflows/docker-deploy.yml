@@ -37,7 +37,7 @@ jobs:
         sudo docker pull elap1/mungbot:latest
         sudo docker stop mungbot || true
         sudo docker rm mungbot || true
-        sudo docker run -v $(pwd)/.env:/usr/src/app/.env \
+        sudo docker run -d -v $(pwd)/.env:/usr/src/app/.env \
            -v $(pwd)/config.json:/usr/src/app/data/security/config.json \
            elap1/mungbot:latest
         EOF
