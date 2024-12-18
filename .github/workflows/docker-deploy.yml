@@ -25,7 +25,7 @@ jobs:
         context: .
         push: true
         tags: |
-          your-dockerhub-username/mungbot:latest
+          elap1/mungbot:latest
 
     - name: Deploy updated container
       run: |
