@@ -1,254 +1,261 @@
 const once = false;
 const name = 'interactionCreate';
 
-// const guildVoiceData = {};
+const guildVoiceData = {};
 
 async function execute(interaction) {
     // console.log(`\n[Command Created : ${interaction.commandName}]`);
     // console.log(`[interaction.customId : ${interaction.customId}]`);
     const command = interaction.commandName;
-    // const client = interaction.client;
+    const client = interaction.client;
 
     if (!command) {
         // Command Handle
         try {
             const author = interaction.user.id;
-            // const guildId = interaction.guildId;
+            const guildId = interaction.guildId;
 
             // Music Interaction - DEPRECATED ON SERVER
-            // const guild = client.guilds.cache.get(interaction.guildId)
-            // const member = guild.members.cache.get(interaction.member.user.id);
-            // const voiceChannel = member.voice.channel;
+            const guild = client.guilds.cache.get(interaction.guildId)
+            const member = guild.members.cache.get(interaction.member.user.id);
+            const voiceChannel = member.voice.channel;
 
-            // if (!guildVoiceData[guildId]) {
-            //     guildVoiceData[guildId] = {
-            //         queue: [],
-            //         player: null,
-            //         connection: null,
-            //         isPause: false,
-            //         isFirst: true
-            //     };
-            // }
+            if (!guildVoiceData[guildId]) {
+                guildVoiceData[guildId] = {
+                    queue: [],
+                    player: null,
+                    connection: null,
+                    isPause: false,
+                    isFirst: true
+                };
+            }
 
-            // const guildQueue = guildVoiceData[guildId].queue;
-            // const guildPlayer = guildVoiceData[guildId].player;
-            // let guildConnection = guildVoiceData[guildId].connection;
-            // var isPause = guildVoiceData[guildId].isPause;
-            // var isFirst = guildVoiceData[guildId].isFirst;
+            const guildQueue = guildVoiceData[guildId].queue;
+            const guildPlayer = guildVoiceData[guildId].player;
+            let guildConnection = guildVoiceData[guildId].connection;
+            var isPause = guildVoiceData[guildId].isPause;
+            var isFirst = guildVoiceData[guildId].isFirst;
 
-            // // 곡 재생 함수
-            // async function playNext(interaction, guildId) {
-            //     if (guildQueue.length === 0) {
-            //         await interaction.editReply({
-            //             embeds: [Music_embed_default],
-            //             components: [MusicComponents_row1, MusicComponents_row2],
-            //         });
-            //         guildConnection.disconnect(); // 큐가 비면 연결 종료
-            //         guildVoiceData[guildId].connection = null; // 연결 상태 초기화
-            //         return;
-            //     }
+            // 곡 재생 함수
+            async function playNext(interaction, guildId) {
+                if (guildQueue.length === 0) {
+                    await interaction.editReply({
+                        embeds: [Music_embed_default],
+                        components: [MusicComponents_row1, MusicComponents_row2],
+                    });
+                    guildConnection.disconnect(); // 큐가 비면 연결 종료
+                    guildVoiceData[guildId].connection = null; // 연결 상태 초기화
+                    return;
+                }
 
-            //     const url = guildQueue[0]; // 큐의 첫 번째 곡
-            //     const stream = ytdl(url, {
-            //         filter: format =>
-            //             format.audioQuality === "AUDIO_QUALITY_MEDIUM" &&
-            //             format.hasVideo === false &&
-            //             format.hasAudio === true &&
-            //             format.container === "mp4",
-            //         highWaterMark: 1 << 25,
-            //         liveBuffer: 1 << 25,
-            //         requestOptions: {
-            //             maxRedirections: 5
-            //         }
-            //     });
+                const url = guildQueue[0]; // 큐의 첫 번째 곡
+                const stream = ytdl(url, {
+                    filter: format =>
+                        format.audioQuality === "AUDIO_QUALITY_MEDIUM" &&
+                        format.hasVideo === false &&
+                        format.hasAudio === true &&
+                        format.container === "mp4",
+                    highWaterMark: 1 << 25,
+                    liveBuffer: 1 << 25,
+                    requestOptions: {
+                        maxRedirections: 5
+                    }
+                });
 
-            //     const info = await ytdl.getBasicInfo(url);
-            //     let Title = info.player_response.videoDetails.title;
-            //     let thumbnailArr = info.player_response.videoDetails.thumbnail.thumbnails;
-            //     let Thumbnail_Image = thumbnailArr[thumbnailArr.length-1].url;
+                const info = await ytdl.getBasicInfo(url);
+                let Title = info.player_response.videoDetails.title;
+                let thumbnailArr = info.player_response.videoDetails.thumbnail.thumbnails;
+                let Thumbnail_Image = thumbnailArr[thumbnailArr.length-1].url;
 
-            //     guildVoiceData[guildId].player = createAudioPlayer();
-            //     const resource = createAudioResource(stream);
+                guildVoiceData[guildId].player = createAudioPlayer();
+                const resource = createAudioResource(stream);
 
-            //     guildVoiceData[guildId].player.play(resource);
-            //     guildConnection.subscribe(guildVoiceData[guildId].player);
+                guildVoiceData[guildId].player.play(resource);
+                guildConnection.subscribe(guildVoiceData[guildId].player);
 
-            //     const Music_embed_inplay = new EmbedBuilder()
-            //     .setTitle(Title)
-            //     .setURL(url)
-            //     .setColor(0xffffff)
-            //     .setImage(Thumbnail_Image)
-            //     .setTimestamp()
-            //     .setFooter({ text: '뭉이 - 음악패널 | 🎧 현재 음악 재생중', iconURL: 'https://cdn.discordapp.com/avatars/896317141329006622/f640361a3b7722b9c4add0fa1888d26d.webp?size=80'})
+                const Music_embed_inplay = new EmbedBuilder()
+                .setTitle(Title)
+                .setURL(url)
+                .setColor(0xffffff)
+                .setImage(Thumbnail_Image)
+                .setTimestamp()
+                .setFooter({ text: '뭉이 - 음악패널 | 🎧 현재 음악 재생중', iconURL: 'https://cdn.discordapp.com/avatars/896317141329006622/f640361a3b7722b9c4add0fa1888d26d.webp?size=80'})
                 
-            //     if(isFirst){
-            //         isFirst = false;
-            //         await interaction.update({
-            //             embeds: [Music_embed_inplay],
-            //             components: [MusicComponents_row1, MusicComponents_row2],
-            //         });
-            //     } else {
-            //         await interaction.editReply({
-            //             embeds: [Music_embed_inplay],
-            //             components: [MusicComponents_row1, MusicComponents_row2],
-            //         });
-            //     }
+                if(isFirst){
+                    isFirst = false;
+                    await interaction.update({
+                        embeds: [Music_embed_inplay],
+                        components: [MusicComponents_row1, MusicComponents_row2],
+                    });
+                } else {
+                    await interaction.editReply({
+                        embeds: [Music_embed_inplay],
+                        components: [MusicComponents_row1, MusicComponents_row2],
+                    });
+                }
 
-            //     guildVoiceData[guildId].player.on(AudioPlayerStatus.Idle, () => {
-            //         guildQueue.shift();
-            //         playNext(interaction, guildId);
-            //     });
+                guildVoiceData[guildId].player.on(AudioPlayerStatus.Idle, () => {
+                    guildQueue.shift();
+                    playNext(interaction, guildId);
+                });
 
-            //     guildVoiceData[guildId].player.on('error', error => {
-            //         console.error(`플레이어 오류: ${error.message}`);
-            //         guildQueue.shift();
-            //         playNext(interaction, guildId);
-            //     });
-            // }
+                guildVoiceData[guildId].player.on('error', error => {
+                    console.log(error);
+                    console.error(`플레이어 오류: ${error.message}`);
+                    guildQueue.shift();
+                    playNext(interaction, guildId);
+                });
+            }
 
-            // if (interaction.customId === 'm_player') {
-            //     if (guildPlayer && isPause){
-            //         guildPlayer.unpause();
-            //         guildVoiceData[guildId].isPause = false;
-            //         await interaction.reply({
-            //             content: "음악이 재개되었어요",
-            //             ephemeral: true
-            //         });
-            //         return;
-            //     } else {
-            //         await interaction.reply({
-            //             content: "음성채널에 접속후, 음악을 튼 상태로 실행해주세요",
-            //             ephemeral: true
-            //         });
-            //         return;
-            //     }
-            // }
-            // if (interaction.customId === 'm_pause') {
-            //     if(guildPlayer && !isPause){
-            //         guildPlayer.pause();
-            //         guildVoiceData[guildId].isPause = true;
-            //         await interaction.reply({
-            //             content: "음악이 일시중지되었어요",
-            //             ephemeral: true
-            //         });
-            //         return;
+            if (interaction.customId === 'm_player') {
+                if (guildPlayer && isPause){
+                    guildPlayer.unpause();
+                    guildVoiceData[guildId].isPause = false;
+                    await interaction.reply({
+                        content: "음악이 재개되었어요",
+                        ephemeral: true
+                    });
+                    return;
+                } else {
+                    const modal = new ModalBuilder()
+                        .setCustomId('msearch_modal')
+                        .setTitle('음악 링크');
+                    const m_search = new TextInputBuilder()
+                        .setCustomId('MusicPanel_search')
+                        .setLabel("재생할 음악의 유튜브 링크를 입력해주세요")
+                        .setStyle(TextInputStyle.Short);
+                    const row1 = new ActionRowBuilder()
+                        .addComponents(m_search);
+                    modal.addComponents(row1);
+                    await interaction.showModal(modal);
+                }
+            }
+            if (interaction.customId === 'm_pause') {
+                if(guildPlayer && !isPause){
+                    guildPlayer.pause();
+                    guildVoiceData[guildId].isPause = true;
+                    await interaction.reply({
+                        content: "음악이 일시중지되었어요",
+                        ephemeral: true
+                    });
+                    return;
 
-            //     } else {
-            //         await interaction.reply({
-            //             content: "음성채널에 접속후, 음악을 튼 상태로 실행해주세요",
-            //             ephemeral: true
-            //         });
-            //         return;
-            //     }
-            // }
-            // if (interaction.customId === 'm_stop') {
-            //     if (guildPlayer) {
-            //         guildPlayer.stop(); // 현재 재생 중인 곡 정지
-            //         guildQueue.length = 0; // 큐 비우기
-            //         guildConnection.disconnect(); // 연결 종료
-            //         guildVoiceData[guildId].connection = null;
+                } else {
+                    await interaction.reply({
+                        content: "음성채널에 접속후, 음악을 튼 상태로 실행해주세요",
+                        ephemeral: true
+                    });
+                    return;
+                }
+            }
+            if (interaction.customId === 'm_stop') {
+                if (guildPlayer) {
+                    guildPlayer.stop(); // 현재 재생 중인 곡 정지
+                    guildQueue.length = 0; // 큐 비우기
+                    guildConnection.disconnect(); // 연결 종료
+                    guildVoiceData[guildId].connection = null;
 
-            //         await interaction.update({
-            //             embeds: [Music_embed_default],
-            //             components: [MusicComponents_row1, MusicComponents_row2],
-            //         });
-            //         return;
-            //     } else {
-            //         await interaction.reply({
-            //             content: "음성채널에 접속후, 음악을 튼 상태로 실행해주세요",
-            //             ephemeral: true
-            //         });
-            //         return;
-            //     }
-            // }
-            // if (interaction.customId === 'm_skip') {
-            //     if (guildPlayer){
-            //         guildPlayer.stop();
-            //         return;
-            //     } else {
-            //         await interaction.reply({
-            //             content: "음성채널에 접속후, 음악을 튼 상태로 실행해주세요",
-            //             ephemeral: true
-            //         });
-            //         return;
-            //     }
-            // }
-            // if (interaction.customId === 'm_search') {
-            //     // modal
-            //     const modal = new ModalBuilder()
-            //         .setCustomId('msearch_modal')
-            //         .setTitle('음악 링크');
-            //     const m_search = new TextInputBuilder()
-            //         .setCustomId('MusicPanel_search')
-            //         .setLabel("재생할 음악의 유튜브 링크를 입력해주세요")
-            //         .setStyle(TextInputStyle.Short);
-            //     const row1 = new ActionRowBuilder()
-            //         .addComponents(m_search);
-            //     modal.addComponents(row1);
-            //     await interaction.showModal(modal);
-            // }
-            // if (interaction.customId === 'm_queue') {
-            //     // embed
-            //     if(guildQueue.length==0){
-            //         await interaction.reply({
-            //             content: "대기열이 존재하지 않아요",
-            //             ephemeral: true
-            //         });
-            //         return;
-            //     }
-            //     let queueArr = [];
-            //     let x=1;
-            //     for (const url of guildQueue) {
-            //         const info = await ytdl.getBasicInfo(url, { agent });
-            //         queueArr.push(`${x}. [${info.player_response.videoDetails.title}](${url})`);
-            //         x++;
-            //     }
-            //     let description = queueArr.join("\n");
-            //     const m_queue_embed = new EmbedBuilder()
-            //     .setTitle("📑 대기열")
-            //     .setDescription(description)
-            //     .setTimestamp()
+                    await interaction.update({
+                        embeds: [Music_embed_default],
+                        components: [MusicComponents_row1, MusicComponents_row2],
+                    });
+                    return;
+                } else {
+                    await interaction.reply({
+                        content: "음성채널에 접속후, 음악을 튼 상태로 실행해주세요",
+                        ephemeral: true
+                    });
+                    return;
+                }
+            }
+            if (interaction.customId === 'm_skip') {
+                if (guildPlayer){
+                    guildPlayer.stop();
+                    return;
+                } else {
+                    await interaction.reply({
+                        content: "음성채널에 접속후, 음악을 튼 상태로 실행해주세요",
+                        ephemeral: true
+                    });
+                    return;
+                }
+            }
+            if (interaction.customId === 'm_search') {
+                // modal
+                const modal = new ModalBuilder()
+                    .setCustomId('msearch_modal')
+                    .setTitle('음악 링크');
+                const m_search = new TextInputBuilder()
+                    .setCustomId('MusicPanel_search')
+                    .setLabel("재생할 음악의 유튜브 링크를 입력해주세요")
+                    .setStyle(TextInputStyle.Short);
+                const row1 = new ActionRowBuilder()
+                    .addComponents(m_search);
+                modal.addComponents(row1);
+                await interaction.showModal(modal);
+            }
+            if (interaction.customId === 'm_queue') {
+                // embed
+                if(guildQueue.length==0){
+                    await interaction.reply({
+                        content: "대기열이 존재하지 않아요",
+                        ephemeral: true
+                    });
+                    return;
+                }
+                let queueArr = [];
+                let x=1;
+                for (const url of guildQueue) {
+                    const info = await ytdl.getBasicInfo(url);
+                    queueArr.push(`${x}. [${info.player_response.videoDetails.title}](${url})`);
+                    x++;
+                }
+                let description = queueArr.join("\n");
+                const m_queue_embed = new EmbedBuilder()
+                .setTitle("📑 대기열")
+                .setDescription(description)
+                .setTimestamp()
 
-            //     await interaction.reply({
-            //         embeds: [m_queue_embed],
-            //         ephemeral: true
-            //     });
-            //     return;
-            // }
+                await interaction.reply({
+                    embeds: [m_queue_embed],
+                    ephemeral: true
+                });
+                return;
+            }
 
-            // if (interaction.customId === 'msearch_modal') {
-            //     const music_url = interaction.fields.getTextInputValue('MusicPanel_search');
-            //     const youtubeRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
-            //     if(!youtubeRegex.test(music_url)){
-            //         await interaction.reply({
-            //             content: "올바른 유튜브 링크를 입력해주세요",
-            //             ephemeral: true
-            //         });
-            //         return;
-            //     }
-            //     if (!voiceChannel) return interaction.reply('음성 채널에 먼저 들어가 주세요.');
+            if (interaction.customId === 'msearch_modal') {
+                const music_url = interaction.fields.getTextInputValue('MusicPanel_search');
+                const youtubeRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+                if(!youtubeRegex.test(music_url)){
+                    await interaction.reply({
+                        content: "올바른 유튜브 링크를 입력해주세요",
+                        ephemeral: true
+                    });
+                    return;
+                }
+                if (!voiceChannel) return interaction.reply('음성 채널에 먼저 들어가 주세요.');
 
-            //     if (!guildConnection) {
-            //         guildConnection = joinVoiceChannel({
-            //             channelId: voiceChannel.id,
-            //             guildId: guildId,
-            //             adapterCreator: guild.voiceAdapterCreator,
-            //         });
-            //         guildVoiceData[guildId].connection = guildConnection; // 커넥션 업데이트
-            //     }
+                if (!guildConnection) {
+                    guildConnection = joinVoiceChannel({
+                        channelId: voiceChannel.id,
+                        guildId: guildId,
+                        adapterCreator: guild.voiceAdapterCreator,
+                    });
+                    guildVoiceData[guildId].connection = guildConnection; // 커넥션 업데이트
+                }
 
-            //     guildQueue.push(music_url);
-            //     if (guildQueue.length === 1) { // 큐에 첫 번째 곡이 추가된 경우
-            //         playNext(interaction, guildId); // 다음 곡 재생
-            //     } else {
-            //         await interaction.reply({
-            //             content: "등록되었습니다",
-            //             ephemeral: true
-            //         });
-            //         return;
-            //     }
-            //     return;
-            // }
+                guildQueue.push(music_url);
+                if (guildQueue.length === 1) { // 큐에 첫 번째 곡이 추가된 경우
+                    playNext(interaction, guildId); // 다음 곡 재생
+                } else {
+                    await interaction.reply({
+                        content: "등록되었습니다",
+                        ephemeral: true
+                    });
+                    return;
+                }
+                return;
+            }
 
             // News Handler
             if (interaction.customId == "news_press") {

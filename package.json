@@ -1,35 +1,36 @@
 {
     "name": "mungbot",
-    "version": "1.7.1",
+    "version": "1.8.0",
     "main": "index.mjs",
     "scripts": {
         "deploy": "pm2 start index.mjs --watch",
-        "update": "npx npm-check-updates -u",
-        "sendkey": "scp -i C:/Users/gangs/.ssh/ssh-key-2024-11-07_bot.key -r D:/_ Files/_ Dev/MungBot/data/security ubuntu@152.69.231.22:/home/ubuntu/MungBot/"
+        "scp_bot": "scp -i C:/Users/gangs/.ssh/ssh-key-2024-11-07_bot.key ./data/security/config.json ./cache/.env ubuntu@152.69.231.22:/home/ubuntu/docker_mung",
+        "scp_nyj": "scp -P 30000 -i C:/Users/gangs/.ssh/second.key ./cache/config.json ./cache/.env ubuntu@125.187.34.9:/home/ubuntu/mungbot",
+        "build": "docker build -t elap1/mungbot:t3 ."
     },
     "engines": {
-        "node": "^22.7.0"
+        "node": "^23.1.0"
     },
     "author": "kangsangwon",
     "license": "ISC",
     "type": "module",
     "dependencies": {
         "@discordjs/voice": "^0.18.0",
-        "@distube/ytdl-core": "^4.15.1",
+        "@distube/ytdl-core": "^4.15.8",
         "@google/generative-ai": "^0.21.0",
-        "axios": "^1.7.8",
+        "axios": "^1.7.9",
         "cheerio": "^1.0.0",
-        "cron": "^3.2.1",
+        "cron": "^3.3.1",
         "discord.js": "^14.16.3",
-        "dotenv": "^16.4.5",
+        "dotenv": "^16.4.7",
         "ffmpeg": "^0.0.4",
         "ffmpeg-static": "^5.2.0",
         "fluent-ffmpeg": "^2.1.3",
         "libsodium-wrappers": "^0.7.15",
         "llama-node": "^0.1.6",
-        "mongodb": "^6.11.0",
+        "mongodb": "^6.12.0",
         "node-cache": "^5.1.2",
-        "openai": "^4.73.1",
+        "openai": "^4.77.0",
         "wink-pos-tagger": "^2.2.2",
         "ytdl-core": "^4.11.5"
     },

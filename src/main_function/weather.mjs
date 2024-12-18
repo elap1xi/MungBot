@@ -3,7 +3,7 @@ async function weather_(message){
     let content = message.content;
     let author = message.author;
     try {
-        content = content.replace(`${prefix} `,"");
+        content = content.replace(`${prefix} `,"").replace(`날씨`," ");
         var location_value = await Location.get_info(content);
         if (location_value == "CANNOT_FIND") { 
             const NoLocInfo_embds = new EmbedBuilder()
@@ -15,7 +15,8 @@ async function weather_(message){
             return;
         }
         if (location_value == "Nah"){
-            let code = await SubFunction.Location_output(author);
+            // let code = await SubFunction.Location_output(author);
+            let code = undefined;
             if(code==undefined){
                 const NoLocInfo_embds = new EmbedBuilder()
                 .setColor(0xffffff).setTitle(`해당 지역을 찾을 수 없습니다.`)

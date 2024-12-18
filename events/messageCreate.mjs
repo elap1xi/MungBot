@@ -69,18 +69,73 @@ async function execute(message) {
             return;
         }
 
-        if (message.guildId == "1282967122254762027") {
-            if (message.attachments.size > 0) {
-                webhookclient_Nam.send({
-                    content: `${message.author.username} : ${message.content}`
-                });
-                webhookclient_Nam.send({
-                    content: `${message.author.username} : ${message.attachments.first().url}`
-                });
-            } else {
-                webhookclient_Nam.send({
-                    content: `${message.author.username} : ${message.content}`
-                });
+        // if (message.guildId == "861212897208172545") {
+        //     const downloadFile = async (url, filename) => {
+        //         try {
+        //             const response = await axios.get(url, { responseType: 'stream' });
+        //             console.log(response.data);
+        //             await new Promise((resolve, reject) => {
+        //                 const writeStream = fs.createWriteStream(filename);
+        //                 response.data.pipe(writeStream);
+            
+        //                 writeStream.on('finish', resolve);
+        //                 writeStream.on('error', reject);
+        //             });
+        //             console.log(`File saved as: ${filename}`);
+        //             return filename;
+        //         } catch (error) {
+        //             console.trace(`Failed to download file from ${url}: ${error.message}`);
+        //             return null;
+        //         }
+        //     };
+            
+        //     const sendLogToWebhook = async (content, files) => {
+        //         try {
+        //             await webhookclient_Nam.send({
+        //                 content, 
+        //                 files: files.map(file => ({ attachment: file }))
+        //             });
+        //             console.log('Log sent to webhook successfully.');
+        //         } catch (error) {
+        //             console.error('Failed to send log to webhook:', error.message);
+        //         }
+        //     };
+
+        //     if (message.attachments.size > 0 || message.content.trim()) {
+        //         const attachments = Array.from(message.attachments.values());
+        //         const downloadPromises = attachments.map(attachment => {
+        //             const filename = `./cache/${Date.now()}_${attachment.name}`;
+        //             return downloadFile(attachment.url, filename);
+        //         });
+        
+        //         const downloadedFiles = (await Promise.all(downloadPromises)).filter(Boolean);
+        //         const messageContent = message.content || '-# Photo Only';
+        
+        //         if (downloadedFiles.length > 0 || messageContent) {
+        //             await sendLogToWebhook(messageContent, downloadedFiles);
+        //         }
+                
+        //         // remove cache
+        //         downloadedFiles.forEach(file => {
+        //             fs.unlink(file, (err) => {
+        //                 if (err) {
+        //                     console.error(`Failed to delete file: ${file}`, err);
+        //                 } else {
+        //                     console.log(`File deleted: ${file}`);
+        //                 }
+        //             });
+        //         });
+        //     }
+        // }
+        if(message.guildId == "1282967122254762027"){
+            if (pre.startsWith("응")) {
+                let msg = message.content.replace("응","");
+                message.channel.send(`교${msg}`);
+                return;
+            }
+            if(message.content.endsWith("은")){
+                message.channel.send("교");
+                return;
             }
         }
 
@@ -134,36 +189,36 @@ async function execute(message) {
                 if (SubFunction.dictionary_default(command_1) === undefined) {
                     if (SubFunction.dictionary_default(command_2) === undefined) {
                         // Music Controller - deprecated on server
-                        // if (command_1 == "셋업") {
-                        //     const guild = message.guild;
-                        //     const channelName = '🎧ㆍ뭉이음악채널';
+                        if (command_1 == "셋업") {
+                            const guild = message.guild;
+                            const channelName = '🎧ㆍ뭉이음악채널';
 
-                        //     let existingChannel = guild.channels.cache.find(ch => ch.name === channelName);
-                        //     if (!existingChannel) {
-                        //         existingChannel = await guild.channels.create({
-                        //             name: channelName,
-                        //             type: 0 // text channel
-                        //         });
+                            let existingChannel = guild.channels.cache.find(ch => ch.name === channelName);
+                            if (!existingChannel) {
+                                existingChannel = await guild.channels.create({
+                                    name: channelName,
+                                    type: 0 // text channel
+                                });
 
-                        //         await existingChannel.send({
-                        //             embeds: [Music_embed_default], 
-                        //             components: [MusicComponents_row1, MusicComponents_row2],
-                        //         });
+                                await existingChannel.send({
+                                    embeds: [Music_embed_default], 
+                                    components: [MusicComponents_row1, MusicComponents_row2],
+                                });
 
-                        //     } else {
-                        //         message.reply({
-                        //             content: '#🎧ㆍ뭉이음악채널 이 이미 존재해요',
-                        //             allowedMentions: { repliedUser: false }
-                        //         });
-                        //         return;
-                        //     }
+                            } else {
+                                message.reply({
+                                    content: '#🎧ㆍ뭉이음악채널 이 이미 존재해요',
+                                    allowedMentions: { repliedUser: false }
+                                });
+                                return;
+                            }
 
-                        //     message.reply({
-                        //         content: '채널이 생성되었어요 #🎧ㆍ뭉이음악채널',
-                        //         allowedMentions: { repliedUser: false }
-                        //     });
-                        //     return;
-                        // }
+                            message.reply({
+                                content: '채널이 생성되었어요 #🎧ㆍ뭉이음악채널',
+                                allowedMentions: { repliedUser: false }
+                            });
+                            return;
+                        }
 
                         // Ping
                         if (command_1 == "핑") {

@@ -31,15 +31,15 @@ async function scrap_info(){
 
     // Back up
     let userData_mlOLD = await cacheCollection.findOne({ ID: 'M' });
-    let userData_exOLD = await cacheCollection.findOne({ ID: 'E' });
+    // let userData_exOLD = await cacheCollection.findOne({ ID: 'E' });
     BotCache_info.set('MELONCHART_OLD', userData_mlOLD['value']);
-    BotCache_info.set('EXCHANGE_OLD', userData_exOLD['value']);
+    // BotCache_info.set('EXCHANGE_OLD', userData_exOLD['value']);
 
     BotCache_info.set('MELONCHART_NEW', '\n');
-    BotCache_info.set('EXCHANGE_NEW', '\n');
+    // BotCache_info.set('EXCHANGE_NEW', '\n');
 
     await cacheCollection.deleteOne({ ID: 'M' });
-    await cacheCollection.deleteOne({ ID: 'E' });
+    // await cacheCollection.deleteOne({ ID: 'E' });
 
     // 멜론 차트 정보
     async function melon_chart(){
@@ -62,9 +62,9 @@ async function scrap_info(){
                     value: BotCache_info.get('MELONCHART_OLD')
                 };
                 await cacheCollection.insertOne(melondata);
-                webhookclient_Error.send({
-                    content: '**Melon Chart - (Failed with Type A)**'
-                });
+                // webhookclient_Error.send({
+                //     content: '**Melon Chart - (Failed with Type A)**'
+                // });
                 return;
             } else {
                 let melondata = {

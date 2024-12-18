@@ -49,7 +49,10 @@ async function AI_default_(message){
             });
         }
 
-        await message.channel.send(openai_comp.choices[0].message.content);
+        await message.reply({
+            content: openai_comp.choices[0].message.content,
+            allowedMentions: { repliedUser: false }
+        });
         return;
     }
     await run(message);

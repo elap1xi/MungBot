@@ -1,1 +1,1 @@
-This folder is for decryption key.
+config file folder

@@ -1,2 +1,0 @@
-cd MungBot
-git pull

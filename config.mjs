@@ -32,9 +32,9 @@ import {
 } from "discord.js";
 
 // Discord Voice module
-// import {
-//     joinVoiceChannel, createAudioPlayer, createAudioResourdce, AudioPlayerStatus
-// } from "@discordjs/voice";
+import {
+    joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus
+} from "@discordjs/voice";
 
 global.Client = Client;
 global.GatewayIntentBits = GatewayIntentBits;
@@ -51,10 +51,10 @@ global.StringSelectMenuBuilder = StringSelectMenuBuilder;
 global.StringSelectMenuOptionBuilder = StringSelectMenuOptionBuilder;
 global.ActionRowBuilder = ActionRowBuilder;
 
-// global.joinVoiceChannel = joinVoiceChannel; 
-// global.createAudioPlayer = createAudioPlayer;
-// global.createAudioResource = createAudioResource;
-// global.AudioPlayerStatus = AudioPlayerStatus;
+global.joinVoiceChannel = joinVoiceChannel; 
+global.createAudioPlayer = createAudioPlayer;
+global.createAudioResource = createAudioResource;
+global.AudioPlayerStatus = AudioPlayerStatus;
 
 // google gemini
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -107,44 +107,44 @@ global.prefix_rwy = config.status == 'test' ? '!!rw' : '!rw';
 global.prefix_simbrief = config.status == 'test' ? '!!fp' : '!fp';
 
 // Music Panel Button Components - DEPRECATED ON SERVER
-// const m_player = new ButtonBuilder()
-//     .setCustomId('m_player')
-//     .setLabel('🎧 재생')
-//     .setStyle(ButtonStyle.Success)
-// const m_pause = new ButtonBuilder()
-//     .setCustomId('m_pause')
-//     .setLabel('🎵 일시정지')
-//     .setStyle(ButtonStyle.Primary)
-// const m_stop = new ButtonBuilder()
-//     .setCustomId('m_stop')
-//     .setLabel('⛔ 정지')
-//     .setStyle(ButtonStyle.Danger)
-// const m_skip = new ButtonBuilder()
-//     .setCustomId('m_skip')
-//     .setLabel('🎶 스킵')
-//     .setStyle(ButtonStyle.Primary)
-// const m_search = new ButtonBuilder()
-//     .setCustomId('m_search')
-//     .setLabel('🔗 음악 검색')
-//     .setStyle(ButtonStyle.Secondary)
-// const m_queue = new ButtonBuilder()
-//     .setCustomId('m_queue')
-//     .setLabel('📑 대기열')
-//     .setStyle(ButtonStyle.Secondary)
+const m_player = new ButtonBuilder()
+    .setCustomId('m_player')
+    .setLabel('🎧 재생')
+    .setStyle(ButtonStyle.Success)
+const m_pause = new ButtonBuilder()
+    .setCustomId('m_pause')
+    .setLabel('🎵 일시정지')
+    .setStyle(ButtonStyle.Primary)
+const m_stop = new ButtonBuilder()
+    .setCustomId('m_stop')
+    .setLabel('⛔ 정지')
+    .setStyle(ButtonStyle.Danger)
+const m_skip = new ButtonBuilder()
+    .setCustomId('m_skip')
+    .setLabel('🎶 스킵')
+    .setStyle(ButtonStyle.Primary)
+const m_search = new ButtonBuilder()
+    .setCustomId('m_search')
+    .setLabel('🔗 음악 검색')
+    .setStyle(ButtonStyle.Secondary)
+const m_queue = new ButtonBuilder()
+    .setCustomId('m_queue')
+    .setLabel('📑 대기열')
+    .setStyle(ButtonStyle.Secondary)
 
-// let row1 = new ActionRowBuilder()
-// .addComponents(m_player, m_pause, m_skip, m_stop)
+let row1 = new ActionRowBuilder()
+.addComponents(m_player, m_pause, m_skip, m_stop)
 
-// let row2 = new ActionRowBuilder()
-// .addComponents(m_queue, m_search)
+let row2 = new ActionRowBuilder()
+.addComponents(m_queue, m_search)
 
-// global.MusicComponents_row1 = row1;
-// global.MusicComponents_row2 = row2;
+global.MusicComponents_row1 = row1;
+global.MusicComponents_row2 = row2;
 
-// const Music_embed_default = new EmbedBuilder()
-// .setTitle("뭉이 - 음악패널")
-// .setColor(0xffffff)
-// .setDescription(`현재 재생중인 음악이 없어요\n이 기능은 현재 베타기능이에요.`)
-// .setFooter({ text: '🎧 음악 기다리는중', iconURL: 'https://cdn.discordapp.com/avatars/896317141329006622/f640361a3b7722b9c4add0fa1888d26d.webp?size=80'})
+const Music_embed_default = new EmbedBuilder()
+.setTitle("뭉이 - 음악패널")
+.setColor(0xffffff)
+.setDescription(`현재 재생중인 음악이 없어요\n이 기능은 현재 베타기능이에요.`)
+.setFooter({ text: '🎧 음악 기다리는중', iconURL: 'https://cdn.discordapp.com/avatars/896317141329006622/f640361a3b7722b9c4add0fa1888d26d.webp?size=80'})
 
-// global.Music_embed_default = Music_embed_default;
+global.Music_embed_default = Music_embed_default;

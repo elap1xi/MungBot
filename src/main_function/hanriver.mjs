@@ -12,7 +12,7 @@ async function han_gang_rvr_(message){
         .setFooter({ text: `station : ${json.station} | status : ${json.status}` });
         message.channel.send({ embeds: [hgbed] });
     } catch(error) {
-        message.channel.send("통신이 원활하지 않아요 :(");
+        message.channel.send("수온 제공 서버가 없어졌어요!");
         webhookclient_Error.send({
             content: '**Lv.Han Temp ERROR**\n```'+error.stack+'```'
         });

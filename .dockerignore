@@ -1,0 +1,14 @@
+/node_modules
+/Test
+/cache
+/data/security/config.json
+.env
+
+/archived
+
+.git
+.github
+.gitignore
+.dockerignore
+Dockerfile
+README.md
