@@ -4,8 +4,8 @@
     "main": "index.mjs",
     "scripts": {
         "deploy": "pm2 start index.mjs --watch",
-        "scp_bot": "scp -i C:/Users/gangs/.ssh/ssh-key-2024-11-07_bot.key ./data/security/config.json ./cache/.env ubuntu@152.69.231.22:/home/ubuntu/docker_mung",
-        "scp_nyj": "scp -P 30000 -i C:/Users/gangs/.ssh/second.key ./cache/config.json ./cache/.env ubuntu@125.187.34.9:/home/ubuntu/mungbot",
+        "scp_bot": "scp -i C:/Users/elap1/.ssh/ssh-key-2024-11-07_bot.key ./data/security/config.json ./cache/.env ubuntu@152.69.231.22:/home/ubuntu/docker_mung",
+        "scp_nyj": "scp -P 30000 -i C:/Users/elap1/.ssh/second.key ./cache/config.json ./cache/.env ubuntu@125.187.34.9:/home/ubuntu/mungbot",
         "build": "docker build -t elap1/mungbot:t3 ."
     },
     "engines": {
