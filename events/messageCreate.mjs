@@ -3,7 +3,8 @@ const name = 'messageCreate';
 
 // const guildVoiceData = {};
 
-var isTest = false;
+var silencio = false;
+var stupefy = false;
 async function execute(message) {
     if (message.author.bot) return;
 
@@ -16,9 +17,12 @@ async function execute(message) {
     var command_1 = contentArr[1];
     var command_2 = contentArr[2];
 
-    if (!pre.startsWith(prefix) && isTest) return;
+    if (!pre.startsWith(prefix) && silencio) return;
 
     try {
+        if (stupefy && author != '602721036852527104') {
+            return;
+        }
         // Lunch Handle
         async function lunch_reply(message, content, author) {
             try {
@@ -131,11 +135,8 @@ async function execute(message) {
         // prefix detect
         if (pre.startsWith(prefix)) {
             await message.channel.sendTyping();
-            if (isTest && author != '602721036852527104') {
-                if(author != '824555500216778792'){
-                    message.channel.send("현재 봇을 점검중이에요 :(");
-                    return;
-                }
+            if (silencio && author != '602721036852527104') {
+                return;
             }
 
             let RTN_value = await SubFunction.contentRequest(content);
@@ -288,7 +289,52 @@ async function execute(message) {
                         else if (command_1 == "도움말") {
                             await Send_EMBD.help(message, 1);
                             return;
-                        } else {
+                        } 
+                        
+                        // Harry Potter Command 🪄
+                        else if (command_1 == "실렌시오!") {
+                            if(author=='602721036852527104'){
+                                if(!silencio){ 
+                                    silencio=true;
+                                    message.channel.send("으읍!"); 
+                                } else {
+                                    //
+                                }
+                            } else {
+                                message.channel.send("프로테고! 🪄");
+                            }
+                        } else if (command_1 == "피니테!") {
+                            if(author=='602721036852527104'){
+                                if(silencio){ 
+                                    silencio = false;
+                                    message.channel.send("휴우..");
+                                } else {
+                                    //
+                                }
+                            } else { return; }
+                        } else if (command_1 == "스튜페파이!") {
+                            if(author=='602721036852527104'){
+                                if(!stupefy){ 
+                                    stupefy=true;
+                                    message.channel.send("..."); 
+                                } else {
+                                    //
+                                }
+                            } else {
+                                message.channel.send("살비오 헥시아! 🪄");
+                            }
+                        } else if (command_1 == "피니테인칸타템!") {
+                            if(author=='602721036852527104'){
+                                if(stupefy){ 
+                                    stupefy=false;
+                                    message.channel.send("...으어..?"); 
+                                } else {
+                                    //
+                                }
+                            } else { return; }
+                        }
+                        
+                        else {
                             try { // Ai Response
                                 await AI.AI_default(message);
                                 return;
@@ -300,6 +346,7 @@ async function execute(message) {
                                 message.channel.send(SubFunction.random_NaN(1));
                             }
                         }
+
                     } else {
                         message.channel.send(SubFunction.dictionary_default(command_2));
                     }
