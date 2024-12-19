@@ -1,10 +1,9 @@
 /node_modules
 /Test
+/archived
 /cache
 /data/security/config.json
 .env
-
-/archived
 
 .git
 .github

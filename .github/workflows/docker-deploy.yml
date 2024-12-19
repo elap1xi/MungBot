@@ -28,17 +28,40 @@ jobs:
           elap1/mungbot:latest
 
     - name: Deploy updated container
+      if: github.ref_name == 'main'
       run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-        cd docker_mung
-        sudo docker pull elap1/mungbot:latest
-        sudo docker stop mungbot || true
-        sudo docker rm mungbot || true
-        sudo docker run -d -v $(pwd)/.env:/usr/src/app/.env \
-           -v $(pwd)/config.json:/usr/src/app/data/security/config.json \
-           elap1/mungbot:latest
-        EOF
-        
+          mkdir -p ~/.ssh
+          echo "${{ secrets.NYJ_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.NYJ_SERVER_IP }} << 'EOF'
+          cd docker_mung
+          sudo docker pull elap1/mungbot:latest
+          sudo docker stop mungR || true
+          sudo docker rm mungR || true
+          sudo docker run -d \
+             --name mungR \
+             --restart on-failure \
+             -v $(pwd)/.env:/usr/src/app/.env \
+             -v $(pwd)/config.json:/usr/src/app/data/security/config.json \
+             elap1/mungbot:latest
+          EOF
+      
+    - name: Deploy updated beta container
+      if: github.ref_name == 'beta'
+      run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+          cd docker_mung
+          sudo docker pull elap1/mungbot:beta
+          sudo docker stop mungR_B || true
+          sudo docker rm mungR_B || true
+          sudo docker run -d \
+             --name mungR_B \
+             --restart on-failure \
+             -v $(pwd)/.env:/usr/src/app/.env \
+             -v $(pwd)/config.json:/usr/src/app/data/security/config.json \
+             elap1/mungbot:beta
+          EOF
+    
