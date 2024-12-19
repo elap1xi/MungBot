@@ -33,7 +33,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.NYJ_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.NYJ_SERVER_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -p 30000 ${{ secrets.SERVER_USER }}@${{ secrets.NYJ_SERVER_IP }} << 'EOF'
           cd docker_mung
           sudo docker pull elap1/mungbot:latest
           sudo docker stop mungR || true
