@@ -127,17 +127,6 @@ async function execute(message) {
         //         });
         //     }
         // }
-        if(message.guildId == "1282967122254762027"){
-            if (pre.startsWith("응")) {
-                let msg = message.content.replace("응","");
-                message.channel.send(`교${msg}`);
-                return;
-            }
-            if(message.content.endsWith("은")){
-                message.channel.send("교");
-                return;
-            }
-        }
 
         // prefix detect
         if (pre.startsWith(prefix)) {
