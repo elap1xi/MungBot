@@ -171,6 +171,11 @@ async function execute(message) {
                 return;
             }
 
+            else if (RTN_value == '9') {    // 
+                await AI.AI_brief(message);
+                return;
+            }
+
             // Check message
             else if (command_1 === undefined) {
                 message.channel.send(SubFunction.random_NaN(2));
