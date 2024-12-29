@@ -6,6 +6,7 @@ const guildVoiceData = {};
 async function execute(interaction) {
     // console.log(`\n[Command Created : ${interaction.commandName}]`);
     // console.log(`[interaction.customId : ${interaction.customId}]`);
+
     const command = interaction.commandName;
     const client = interaction.client;
 
@@ -14,6 +15,29 @@ async function execute(interaction) {
         try {
             const author = interaction.user.id;
             const guildId = interaction.guildId;
+
+            // Metar
+            async function get_metar(code){
+                let URL_AVWX = `https://avwx.rest/api/metar/${code}`;
+                let json_avwx = await axios.get(URL_AVWX, {
+                    headers:{
+                        'Authorization':config.AVWX_key
+                    }
+                })
+                .then(res => res.data)
+                .catch(error => console.log(error));
+                return json_avwx;
+            }
+            
+            if(interaction.customId.startsWith('mtr_')){
+                let code = interaction.customId.split(":")[1];
+                let raw = (await get_metar(code))['raw'];
+                await interaction.reply({
+                    content: `\`\`\`${raw}\`\`\``,
+                    ephemeral: true
+                });
+                return;
+            }
 
             // Music Interaction - DEPRECATED ON SERVER
             const guild = client.guilds.cache.get(interaction.guildId)

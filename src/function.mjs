@@ -332,6 +332,18 @@ export async function  Detect_language(value) {
   return origin;
 }
 
+export async function bitly_url(url) {
+    const response = await fetch('https://api-ssl.bitly.com/v4/shorten', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${config.bitlytoken}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "long_url": url, "domain": "bit.ly", "group_guid": config.bitlyid })
+    });
+    return response.json();
+}
+
 export async function  NAVER_shopping(value, target) {
     async function get(value, target) {
         let json = axios.get(encodeURI(`https://playentry.org/api/expansionBlock/papago/translate/n2mt?text=${value}&target=${target}`))

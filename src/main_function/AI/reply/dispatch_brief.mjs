@@ -3,7 +3,8 @@ async function AI_brief_(message){
     async function run(message) {
         let content = message.content;
 
-        let prompt = `너는 디스코드의 봇이고, 사용자가 원하는 비행 계획을 토대로 링크를 만들어줘야해. 예를 들면,
+        let prompt = `너는 디스코드의 봇이고, 사용자가 원하는 비행 계획을 토대로 링크를 만들어줘야해. 
+        예를 들어,
         Flight: ABC1234
         Aircraft: B738
         Origin: KORD
