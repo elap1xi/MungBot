@@ -28,7 +28,7 @@ global.BotCache_news = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 import {
     Client, GatewayIntentBits, ActivityType,
     SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ModalBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, 
-    TextInputBuilder, TextInputStyle, ButtonBuilder, ButtonStyle, WebhookClient
+    TextInputBuilder, TextInputStyle, ButtonBuilder, ButtonStyle, WebhookClient, MessageType
 } from "discord.js";
 
 // Discord Voice module
@@ -50,6 +50,7 @@ global.ButtonStyle = ButtonStyle;
 global.StringSelectMenuBuilder = StringSelectMenuBuilder;
 global.StringSelectMenuOptionBuilder = StringSelectMenuOptionBuilder;
 global.ActionRowBuilder = ActionRowBuilder;
+global.MessageType = MessageType;
 
 global.joinVoiceChannel = joinVoiceChannel; 
 global.createAudioPlayer = createAudioPlayer;

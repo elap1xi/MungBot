@@ -8,8 +8,8 @@ export async function AI_sort(content) {
     return await AI_sort_(content);
 }
 
-export async function AI_default(message) {
-    await AI_default_(message);
+export async function AI_default(message, chatlog) {
+    await AI_default_(message, chatlog);
 }
 
 export async function AI_melonchart(message) {

@@ -131,6 +131,62 @@ async function execute(message) {
         //         });
         //     }
         // }
+        async function reconstructChat(message, client) {
+            let chatlog = [];
+            let myTurn = true;
+        
+            const a = async (msg) => {
+                const reply = await msg.fetchReference();
+                const isBotMessage = reply.author.id === client.user.id;
+        
+                if (!myTurn && isBotMessage) throw new Error("Invalid user turn: Bot's turn in user role.");
+                if (myTurn && !isBotMessage) throw new Error("Invalid assistant turn: User's turn in bot role.");
+        
+                chatlog = [{ role: myTurn ? "assistant" : "user", content: reply.content }, ...chatlog];
+        
+                myTurn = !myTurn;
+        
+                if (reply.type === MessageType.Reply) {
+                    await a(reply);
+                } else if (isBotMessage) {
+                    throw new Error("Invalid end turn: Bot message is the last.");
+                }
+            };
+        
+            if (message.type === MessageType.Reply) {
+                try {
+                    await a(message);
+                } catch (err) {
+                    console.error("Error reconstructing chat:", err);
+                    throw new Error("Failed to reconstruct chat.");
+                }
+            }
+        
+            return chatlog;
+        }
+        
+        
+        if (message.mentions.users.has(client.user.id) && !message.author.bot){
+            await message.channel.sendTyping();
+
+            let chatlog = [{ role: "user", content: message.content }];
+
+            try {
+                const previousChat = await reconstructChat(message, client);
+                chatlog = [...previousChat, ...chatlog];
+
+                await AI.AI_default(message, chatlog);
+                return;
+
+            } catch (err) {
+                console.error("Error handling AI response:", err);
+                await message.reply({
+                    content: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+                    allowedMentions: { repliedUser: false }
+                });
+            }
+
+        }
 
         // prefix detect
         if (pre.startsWith(prefix)) {
@@ -341,9 +397,20 @@ async function execute(message) {
                         
                         else {
                             try { // Ai Response
-                                await AI.AI_default(message);
-                                return;
-
+                                let chatlog = [{ role: "user", content: message.content }];
+                                try {
+                                    const previousChat = await reconstructChat(message, client);
+                                    chatlog = [...previousChat, ...chatlog];
+                        
+                                    await AI.AI_default(message, chatlog);
+                                    return;
+                                } catch (err) {
+                                    console.error("Error handling AI response:", err);
+                                    await message.reply({
+                                        content: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+                                        allowedMentions: { repliedUser: false }
+                                    });
+                                }
                             } catch (error) {
                                 webhookclient_Error.send({
                                     content: '**AI ERROR**\n```' + error.stack + '```'
