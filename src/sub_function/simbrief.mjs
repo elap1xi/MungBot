@@ -72,12 +72,14 @@ async function SimBrief_(message, user){
 
         const skyvector = new ButtonBuilder()
             .setLabel(`Skyvector`)
-            .setURL(xml_skyvector)
+            .setURL("https://skyvector.com")
             .setStyle(ButtonStyle.Link)
+            .setDisabled(true)
         const vatsim = new ButtonBuilder()
             .setLabel(`📡 File in Vatsim`)
-            .setURL(xml_vatsim)
+            .setURL("https://vatsim.net")
             .setStyle(ButtonStyle.Link)
+            .setDisabled(true)
         let mrow2 = new ActionRowBuilder()
         .addComponents(skyvector, vatsim)
         
