@@ -5,8 +5,8 @@ const name = 'messageCreate';
 
 var silencio = false;
 var stupefy = false;
-async function execute(message) {
-    if (message.author.bot) return;
+async function execute(message) {896317141329006622
+    if (message.author.bot && message.author.id !== "1014813681734918144" && message.author.id !== "896317141329006622") return;
 
     const client = message.client;
     const content = (message.content);
