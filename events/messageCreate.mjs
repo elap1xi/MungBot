@@ -23,6 +23,11 @@ async function execute(message) {
         if (stupefy && author != '602721036852527104') {
             return;
         }
+
+        if (message.content == "alwdlwllwl@@#!@#!@#!23") {
+            message.channel.send("뭉이야 안녕??");
+            return;
+        }
         // Lunch Handle
         async function lunch_reply(message, content, author) {
             try {

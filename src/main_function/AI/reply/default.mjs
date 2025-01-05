@@ -13,7 +13,7 @@ async function AI_default_(message, chatlog){
 
         await message.reply({
             content: openai_comp.choices[0].message.content,
-            allowedMentions: { repliedUser: false }
+            allowedMentions: { repliedUser: true }
         });
         return;
     }
