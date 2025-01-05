@@ -6,7 +6,7 @@ const name = 'messageCreate';
 var silencio = false;
 var stupefy = false;
 async function execute(message) {
-    if (message.author.bot && message.author.id !== "1014813681734918144" && message.author.id !== "896317141329006622") return;
+    if (message.author.bot) return;
 
     const client = message.client;
     const content = (message.content);
@@ -20,14 +20,8 @@ async function execute(message) {
     if (!pre.startsWith(prefix) && silencio) return;
 
     try {
-        if (stupefy && author != '602721036852527104') {
-            return;
-        }
+        if (stupefy && author != '602721036852527104') return;
 
-        if (message.content == "alwdlwllwl@@#!@#!@#!23") {
-            message.channel.send("뭉이야 안녕??");
-            return;
-        }
         // Lunch Handle
         async function lunch_reply(message, content, author) {
             try {
