@@ -72,6 +72,22 @@ async function execute(message) {
             return;
         }
 
+        if (message.channelId == "1313522205614805033"){
+            if(message.content!==""){
+                await webhookclient_K1.send({
+                    username: message.author.globalName,
+                    avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
+                    content: message.content
+                });
+            } else if (message.attachments.first().url){
+                await webhookclient_K1.send({
+                    username: message.author.globalName,
+                    avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
+                    content: message.attachments.first().url
+                });
+            }
+        }
+
         // if (message.guildId == "861212897208172545") {
         //     const downloadFile = async (url, filename) => {
         //         try {
