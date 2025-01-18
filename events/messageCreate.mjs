@@ -72,7 +72,7 @@ async function execute(message) {
             return;
         }
 
-        if (message.channelId == "1313522205614805033"){
+        if (message.channelId == "1313522205614805033299"){
             if(message.content!==""){
                 await webhookclient_K1.send({
                     username: message.author.globalName,
