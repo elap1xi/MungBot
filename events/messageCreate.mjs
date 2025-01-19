@@ -72,18 +72,24 @@ async function execute(message) {
             return;
         }
 
-        if (message.channelId == "1313522205614805033299"){
-            if(message.content!==""){
-                await webhookclient_K1.send({
-                    username: message.author.globalName,
-                    avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
-                    content: message.content
-                });
-            } else if (message.attachments.first().url){
-                await webhookclient_K1.send({
-                    username: message.author.globalName,
-                    avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
-                    content: message.attachments.first().url
+        if (message.channelId == "1313522205614805033" && config.status == "online"){
+            try{
+                if(message.content!==""){
+                    await webhookclient_K1.send({
+                        username: message.author.globalName,
+                        avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
+                        content: message.content
+                    });
+                } else if (message.attachments.first().url){
+                    await webhookclient_K1.send({
+                        username: message.author.globalName,
+                        avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
+                        content: message.attachments.first().url
+                    });
+                }
+            } catch(error) {
+                webhookclient_Error.send({
+                    content: '**Viewer only Channel webhook ERROR**\n```' + error.stack + '```'
                 });
             }
         }

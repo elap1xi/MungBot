@@ -69,8 +69,7 @@ global.openai = new OpenAI({ apiKey: config.openai });
 // webhook
 global.webhookclient_Error = new WebhookClient({ url: config.log_error });
 global.webhookclient_BakJae = new WebhookClient({ url: config.log_bakjae });
-global.webhookclient_Nam = new WebhookClient({ url: 'https://discord.com/api/webhooks/1299748657700147270/sYcVx8hdUPpwT1LDBJxvF75o3dPcWbjLy7LzFverenc7IkZrNIJsfTEVUuJa4KMQhJEY' });
-global.webhookclient_K1 = new WebhookClient({ url: "https://discord.com/api/webhooks/1330111741203578964/fbbWqd0J2MAch0fuTa6dNd8NSnMbSS5PL9I9fQ9_FKYf4GKDnqmmLLGI-Le7srqWLdVE" });
+global.webhookclient_K1 = new WebhookClient({ url: config.log_viewchannel });
 
 // import File
 import * as Function from './src/ExportFunction.mjs';
