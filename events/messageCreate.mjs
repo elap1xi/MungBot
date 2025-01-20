@@ -103,7 +103,7 @@ async function execute(message) {
         
             const sendLogToWebhook = async (content, files) => {
                 const fileAttachments = files.map(file => ({ attachment: file }));
-                await webhookclient_gen0.send({
+                await webhookclient_K1.send({
                     username: message.author.globalName == null ? message.author.username : message.author.globalName,
                     avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
                     content,
