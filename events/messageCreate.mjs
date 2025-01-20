@@ -72,86 +72,73 @@ async function execute(message) {
             return;
         }
 
-        if (message.channelId == "1313522205614805033" && config.status == "online"){
-            try{
-                if(message.content!==""){
-                    await webhookclient_K1.send({
-                        username: message.author.globalName,
-                        avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
-                        content: message.content
-                    });
-                } else if (message.attachments.first().url){
-                    await webhookclient_K1.send({
-                        username: message.author.globalName,
-                        avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
-                        content: message.attachments.first().url
+        if (message.channelId == "1313522205614805033" && config.status == "online") {
+            const clearCacheFolder = () => {
+                const folderPath = 'cache/attachment/';
+                if (!fs.existsSync(folderPath)) {
+                    fs.mkdirSync(folderPath, { recursive: true });
+                } else {
+                    fs.rm(folderPath, { recursive: true, force: true }, (err) => {
+                        if (err) {
+                            console.error('Error clearing folder:', err);
+                        }
+                        fs.mkdirSync(folderPath, { recursive: true });
                     });
                 }
-            } catch(error) {
-                webhookclient_Error.send({
-                    content: '**Viewer only Channel webhook ERROR**\n```' + error.stack + '```'
+            
+            };
+
+            const download_image = async (url, name) => {
+                const response = await axios({
+                    url,
+                    responseType: 'stream',
                 });
+                return new Promise((resolve, reject) => {
+                    response.data
+                        .pipe(fs.createWriteStream(name))
+                        .on('finish', resolve)
+                        .on('error', reject);
+                });
+            };
+        
+            const sendLogToWebhook = async (content, files) => {
+                const fileAttachments = files.map(file => ({ attachment: file }));
+                await webhookclient_gen0.send({
+                    username: message.author.globalName == null ? message.author.username : message.author.globalName,
+                    avatarURL: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=80`,
+                    content,
+                    files: fileAttachments,
+                });
+            };
+        
+            if (message.attachments.size > 0 || message.content.trim()) {
+                try{
+                    clearCacheFolder();
+                    const attachments = message.attachments;
+                    const downloadedFiles = [];
+            
+                    for (const attachment of attachments.values()) {
+                        const filename = `cache/attachment/${message.channelId}${Date.now()}_image.png`;
+                        await download_image(attachment.url, filename);
+                        downloadedFiles.push(filename);
+                    }
+                    await sendLogToWebhook(message.content, downloadedFiles);
+    
+                    downloadedFiles.forEach(file => {
+                        fs.unlink(file, (err) => {
+                            if (err) console.error(`Failed to delete file: ${file}`, err);
+                        });
+                    });
+                } catch (error) {
+                    webhookclient_Error.send({
+                        content: '**Viewer only Channel webhook ERROR**\n```' + error.stack + '```'
+                    });
+                }
             }
         }
-
-        // if (message.guildId == "861212897208172545") {
-        //     const downloadFile = async (url, filename) => {
-        //         try {
-        //             const response = await axios.get(url, { responseType: 'stream' });
-        //             console.log(response.data);
-        //             await new Promise((resolve, reject) => {
-        //                 const writeStream = fs.createWriteStream(filename);
-        //                 response.data.pipe(writeStream);
-            
-        //                 writeStream.on('finish', resolve);
-        //                 writeStream.on('error', reject);
-        //             });
-        //             console.log(`File saved as: ${filename}`);
-        //             return filename;
-        //         } catch (error) {
-        //             console.trace(`Failed to download file from ${url}: ${error.message}`);
-        //             return null;
-        //         }
-        //     };
-            
-        //     const sendLogToWebhook = async (content, files) => {
-        //         try {
-        //             await webhookclient_Nam.send({
-        //                 content, 
-        //                 files: files.map(file => ({ attachment: file }))
-        //             });
-        //             console.log('Log sent to webhook successfully.');
-        //         } catch (error) {
-        //             console.error('Failed to send log to webhook:', error.message);
-        //         }
-        //     };
-
-        //     if (message.attachments.size > 0 || message.content.trim()) {
-        //         const attachments = Array.from(message.attachments.values());
-        //         const downloadPromises = attachments.map(attachment => {
-        //             const filename = `./cache/${Date.now()}_${attachment.name}`;
-        //             return downloadFile(attachment.url, filename);
-        //         });
         
-        //         const downloadedFiles = (await Promise.all(downloadPromises)).filter(Boolean);
-        //         const messageContent = message.content || '-# Photo Only';
-        
-        //         if (downloadedFiles.length > 0 || messageContent) {
-        //             await sendLogToWebhook(messageContent, downloadedFiles);
-        //         }
-                
-        //         // remove cache
-        //         downloadedFiles.forEach(file => {
-        //             fs.unlink(file, (err) => {
-        //                 if (err) {
-        //                     console.error(`Failed to delete file: ${file}`, err);
-        //                 } else {
-        //                     console.log(`File deleted: ${file}`);
-        //                 }
-        //             });
-        //         });
-        //     }
-        // }
+
+        // 메세지 처리
         async function reconstructChat(message, client) {
             let chatlog = [];
             let myTurn = true;
@@ -185,7 +172,6 @@ async function execute(message) {
         
             return chatlog;
         }
-        
         
         if (message.mentions.users.has(client.user.id) && !message.author.bot){
             await message.channel.sendTyping();
@@ -459,7 +445,10 @@ async function execute(message) {
         webhookclient_Error.send({
             content: '**Message Handler ERROR**\n```' + error.stack + '```'
         });
-        await message.reply({ content: '죄송해요, 메세지를 처리하는 도중 에러가 발생했어요! :(', ephemeral: false });
+        await message.reply({ 
+            content: '죄송해요, 메세지를 처리하는 도중 에러가 발생했어요! :(',
+            allowedMentions: { repliedUser: false }
+        });
     }
 }
 

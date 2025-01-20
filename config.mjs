@@ -12,9 +12,16 @@ global.fs = fs;
 global.ytdl = require("@distube/ytdl-core");
 global.cron = require("cron");
 global.cheerio = require("cheerio");
+global.path = require("path");
 
 import posTagger from 'wink-pos-tagger';
 global.tagger = new posTagger();
+
+// file path
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+global.__filename = fileURLToPath(import.meta.url);
+global.__dirname = dirname(__filename);
 
 // Data - MongoDB, NodeCache
 const { MongoClient } = require('mongodb');
@@ -40,16 +47,18 @@ global.Client = Client;
 global.GatewayIntentBits = GatewayIntentBits;
 global.ActivityType = ActivityType;
 
-global.TextInputBuilder = TextInputBuilder;
-global.TextInputStyle = TextInputStyle;
-global.EmbedBuilder = EmbedBuilder;
 global.SlashCommandBuilder = SlashCommandBuilder;
+global.EmbedBuilder = EmbedBuilder;
+global.ActionRowBuilder = ActionRowBuilder;
 global.ModalBuilder = ModalBuilder;
-global.ButtonBuilder = ButtonBuilder;
-global.ButtonStyle = ButtonStyle;
 global.StringSelectMenuBuilder = StringSelectMenuBuilder;
 global.StringSelectMenuOptionBuilder = StringSelectMenuOptionBuilder;
-global.ActionRowBuilder = ActionRowBuilder;
+
+global.TextInputBuilder = TextInputBuilder;
+global.TextInputStyle = TextInputStyle;
+global.ButtonBuilder = ButtonBuilder;
+global.ButtonStyle = ButtonStyle;
+global.WebhookClient = WebhookClient; 
 global.MessageType = MessageType;
 
 global.joinVoiceChannel = joinVoiceChannel; 
@@ -68,7 +77,7 @@ global.openai = new OpenAI({ apiKey: config.openai });
 
 // webhook
 global.webhookclient_Error = new WebhookClient({ url: config.log_error });
-global.webhookclient_BakJae = new WebhookClient({ url: config.log_bakjae });
+global.webhookclient_gen0 = new WebhookClient({ url: config.log_gen });
 global.webhookclient_K1 = new WebhookClient({ url: config.log_viewchannel });
 
 // import File

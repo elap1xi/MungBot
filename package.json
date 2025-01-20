@@ -1,6 +1,6 @@
 {
     "name": "mungbot",
-    "version": "1.8.0",
+    "version": "1.8.2",
     "main": "index.mjs",
     "scripts": {
         "scp_bot": "scp -i C:/Users/elap1/.ssh/ssh-key-2024-11-07_bot.key ./data/security/config.json ./cache/.env ubuntu@152.69.231.22:/home/ubuntu/docker_mung",
