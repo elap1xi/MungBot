@@ -81,6 +81,7 @@ global.webhookclient_gen0 = new WebhookClient({ url: config.log_gen });
 global.webhookclient_K1 = new WebhookClient({ url: config.log_viewchannel_k1 });
 global.webhookclient_K2 = new WebhookClient({ url: config.log_viewchannel_k2 });
 global.webhookclient_K3 = new WebhookClient({ url: config.log_viewchannel_k3 });
+global.webhookclient_voice_k = new WebhookClient({ url: config.log_voicejoin_k });
 
 // import File
 import * as Function from './src/ExportFunction.mjs';
