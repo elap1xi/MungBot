@@ -8,13 +8,13 @@ async function execute(oldState, newState) {
 
 	if (!oldState.channel && newState.channel) {
         webhookclient_voice_k.send({
-            content: `${newState.member.user.tag} joined voice channel : ${newState.channel.name}`
+            content: `${newState.member.user.tag} joined voice channel : ${newState.channel.name} - ${Date.now()}`
         });
     }
     
     if (oldState.channel && !newState.channel) {
         webhookclient_voice_k.send({
-            content: `${oldState.member.user.tag} left voice channel : ${oldState.channel.name}`
+            content: `${oldState.member.user.tag} left voice channel : ${oldState.channel.name} - ${Date.now()}`
         });
     }
 }
