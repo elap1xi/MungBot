@@ -5,6 +5,7 @@ import rwy_info_ from './main_function/runway.mjs';
 import weather_ from './main_function/weather.mjs';
 import SimBrief_ from './sub_function/simbrief.mjs';
 import News_ from './main_function/news.mjs';
+import logger_ from './sub_function/logger.mjs';
 
 export async function lunch(message,content,author){
     await lunch_(message, content, author);
@@ -28,4 +29,8 @@ export async function SimBrief(message, user){
 
 export async function News(message){
     await News_(message);
+}
+
+export async function logger(message){
+    await logger_(message);
 }

@@ -78,7 +78,9 @@ global.openai = new OpenAI({ apiKey: config.openai });
 // webhook
 global.webhookclient_Error = new WebhookClient({ url: config.log_error });
 global.webhookclient_gen0 = new WebhookClient({ url: config.log_gen });
-global.webhookclient_K1 = new WebhookClient({ url: config.log_viewchannel });
+global.webhookclient_K1 = new WebhookClient({ url: config.log_viewchannel_k1 });
+global.webhookclient_K2 = new WebhookClient({ url: config.log_viewchannel_k2 });
+global.webhookclient_K3 = new WebhookClient({ url: config.log_viewchannel_k3 });
 
 // import File
 import * as Function from './src/ExportFunction.mjs';
