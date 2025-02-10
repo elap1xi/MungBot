@@ -6,7 +6,6 @@
  * @returns 
  */
 async function lunch_(message, content, author){
-        if (content==prefix_lch3||content==prefix_lch4||content==prefix_lch5||content==prefix_lch6) content = "내일 급식";
         content = content.replace(prefix, "");
 		content = content.replace(/의+\s/gi," "); content = content.replace(/그리고/gi," ");
 

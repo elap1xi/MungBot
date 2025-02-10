@@ -420,9 +420,9 @@ export function dictionary_default(value) {
   d['메롱'] = '🤪';
   d['뭐해'] = '**뒹굴뒹굴..**';
   d['뭐해?'] = '**뒹굴뒹굴..**';
-  d['몇살'] = '뭉이는 이제... ``3살``!!이에요!';
-  d['몇살?'] = '뭉이는 이제... ``3살``!!이에요!';
-  d['몇살이야?'] = '뭉이는 이제... ``2살``!!이에요!';
+  d['몇살'] = '뭉이는 이제... ``4살``!!이에요!';
+  d['몇살?'] = '뭉이는 이제... ``4살``!!이에요!';
+  d['몇살이야?'] = '뭉이는 이제... ``4살``!!이에요!';
   d['생일'] = '뭉이 생일은... 10월 9일이에요!'
   d['짖어'] = '**왈왈!!**';
   d['시리'] = '랩빼고 다 잘해요!';
@@ -437,10 +437,6 @@ export function dictionary_default(value) {
   d['.....;'] = '이제 더 없으니 그만하세요!';
   d['이제 더 없으니 그만하세요!'] = '이제 진짜 없';
   d['이제 진짜 없'] = '으에???';
-  d['B737'] = 'https://img1.yna.co.kr/etc/inner/KR/2018/01/20/AKR20180120030500003_01_i_P2.jpg';
-  d['b737'] = 'https://img1.yna.co.kr/etc/inner/KR/2018/01/20/AKR20180120030500003_01_i_P2.jpg';
-  d['B747'] = 'https://blog.kakaocdn.net/dn/bnyTp3/btrtB9gKj5r/6G4lHRYjrEr4haPcZfBw70/img.jpg';
-  d['b747'] = 'https://blog.kakaocdn.net/dn/bnyTp3/btrtB9gKj5r/6G4lHRYjrEr4haPcZfBw70/img.jpg';
   d['조랭이'] = '제가 탄생할수 있게 도와주신 분이에요!';
   d['고마워'] = '별말씀을요!';
   d['땡큐'] = '별말씀을요!';
@@ -474,6 +470,7 @@ export function check_command_lt(value) {
     return true;
   }
 }
+
 export function random_NaN(value) {
   var nan = ["으에?", "으잉?", "잘 이해하지 못했어요!"]; 
   var nan2 = ["네?", "저 부르셨나요?", "네!"];

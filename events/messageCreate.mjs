@@ -1,10 +1,6 @@
-import { userMention } from "discord.js";
-
 const once = false;
 const name = 'messageCreate';
 
-var silencio = false;
-var stupefy = false;
 async function execute(message) {
     Function.logger(message);
     if (message.author.bot) return;
@@ -18,11 +14,7 @@ async function execute(message) {
     var command_1 = contentArr[1];
     var command_2 = contentArr[2];
 
-    if (!pre.startsWith(prefix) && silencio) return;
-
     try {
-        if (stupefy && author != '602721036852527104') return;
-
         // Lunch Handle
         async function lunch_reply(message, content, author) {
             try {
@@ -35,11 +27,6 @@ async function execute(message) {
                 });
                 return;
             }
-        }
-
-        if (content == prefix_lch || content == prefix_lch2 || content == prefix_lch3 || content == prefix_lch4 || content == prefix_lch5 || content == prefix_lch6) {
-            await message.channel.sendTyping();
-            lunch_reply(message, content, author);
         }
 
         // Runway Info Handle
@@ -144,9 +131,6 @@ async function execute(message) {
         // prefix detect
         if (pre.startsWith(prefix)) {
             await message.channel.sendTyping();
-            if (silencio && author != '602721036852527104') {
-                return;
-            }
 
             let RTN_value = await SubFunction.contentRequest(content);
 
@@ -305,49 +289,6 @@ async function execute(message) {
                             return;
                         } 
                         
-                        // Harry Potter Command 🪄
-                        else if (command_1 == "실렌시오!") {
-                            if(author=='602721036852527104'){
-                                if(!silencio){ 
-                                    silencio=true;
-                                    message.channel.send("으읍!"); 
-                                } else {
-                                    //
-                                }
-                            } else {
-                                message.channel.send("프로테고! 🪄");
-                            }
-                        } else if (command_1 == "피니테!") {
-                            if(author=='602721036852527104'){
-                                if(silencio){ 
-                                    silencio = false;
-                                    message.channel.send("휴우..");
-                                } else {
-                                    //
-                                }
-                            } else { return; }
-                        } else if (command_1 == "스튜페파이!") {
-                            if(author=='602721036852527104'){
-                                if(!stupefy){ 
-                                    stupefy=true;
-                                    message.channel.send("..."); 
-                                } else {
-                                    //
-                                }
-                            } else {
-                                message.channel.send("살비오 헥시아! 🪄");
-                            }
-                        } else if (command_1 == "피니테인칸타템!") {
-                            if(author=='602721036852527104'){
-                                if(stupefy){ 
-                                    stupefy=false;
-                                    message.channel.send("...으어..?"); 
-                                } else {
-                                    //
-                                }
-                            } else { return; }
-                        }
-                        
                         else {
                             try { // Ai Response
                                 let content = message.content.trim();
@@ -394,12 +335,6 @@ async function execute(message) {
                     message.channel.send(SubFunction.dictionary_default(command_1));
                 }
             }
-        }
-
-        if (pre.startsWith('뭉디야')) {
-            await message.channel.sendTyping();
-            message.channel.send("https://media.discordapp.net/attachments/757907911786627156/1119643411859910706/IMG_3685.jpg?width=1461&height=897");
-            message.channel.send("이거 찾으시나요?\n이게 아니라면 제 이름은 뭉디 아니고 뭉이에요 뭉이!!");
         }
 
     } catch (error) {

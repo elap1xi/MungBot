@@ -127,10 +127,10 @@ const Status_CONFIG = {
     test2: {
         prefix: config.prefix_test2,
         deploy_log: config.log_test_id,
-        Version: pkg.version + ' (beta)',
+        Version: pkg.version + ' (alpha)',
         Token: env.token_test2,
-        prefix_rwy: '!!rw',
-        prefix_simbrief: '!!fp'
+        prefix_rwy: '!!!rw',
+        prefix_simbrief: '!!!fp'
     }
 }
 
@@ -139,7 +139,7 @@ const SC = Status_CONFIG[cStatus];
 
 global.prefix = SC.prefix;
 global.deploy_log = SC.deploy_log;
-global.Version = SC.version;
+global.Version = SC.Version;
 global.Token = SC.Token;
 global.prefix_rwy = SC.prefix_rwy;
 global.prefix_simbrief = SC.prefix_simbrief;
