@@ -101,9 +101,10 @@ async function SimBrief_(message, user){
         .setImage(img)
         .setFooter({ text:`Airac ${airac} | ${user} | unit : ${units.toUpperCase()}`});
 
-        await message.channel.send({ 
+        await message.reply({ 
             embeds:[embed],
-            components: [mrow1, mrow2]
+            components: [mrow1, mrow2],
+            allowedMentions: { repliedUser: false }
         });
         return;
 

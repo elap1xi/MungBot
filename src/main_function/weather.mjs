@@ -11,7 +11,10 @@ async function weather_(message){
             .setDescription('반드시 **지역명**을 입력해주세요')
             .setTimestamp()
             .setFooter({text: `Data : 공공데이터포털`})
-            await message.channel.send({ embeds : [NoLocInfo_embds]});
+            await message.reply({
+                embeds: [NoLocInfo_embds],
+                allowedMentions: { repliedUser: false }
+            });
             return;
         }
         if (location_value == "Nah"){
@@ -23,7 +26,10 @@ async function weather_(message){
                 .setDescription('반드시 **지역명**을 입력해주세요')
                 .setTimestamp()
                 .setFooter({text: `Data : 공공데이터포털`})
-                await message.channel.send({ embeds : [NoLocInfo_embds]});
+                await message.reply({
+                    embeds: [NoLocInfo_embds],
+                    allowedMentions: { repliedUser: false }
+                });
                 return;
             }
             location_value = await Location.get_info_code(code)
@@ -77,7 +83,10 @@ async function weather_(message){
             .setColor(0xffffff).setTitle(`날씨를 가져오는데 에러가 발생했어요`)
             .setTimestamp()
             .setFooter({text: `Data : 공공데이터포털`})
-            await message.channel.send({ embeds : [WeatherErrUnknown_embds]});
+            await message.reply({
+                embeds: [WeatherErrUnknown_embds],
+                allowedMentions: { repliedUser: false }
+            });
             return;
         }
 
@@ -114,7 +123,10 @@ async function weather_(message){
             .setDescription(`기온 : ${T1H}℃ (${Sky})\n${Rain}${Pty}, 낙뢰 : ${Ligtening}\n풍속 : ${Wind_Speed} | 풍향 : ${Wind_Direction}°\n습도 : ${Humidity}`)
             .setTimestamp()
             .setFooter({text: `예보시간 : ${Number(Hour_fcst)}:00 | Data : 공공데이터포털`})
-            await message.channel.send({embeds: [weather_embd]});
+            await message.reply({
+                embeds: [weather_embd],
+                allowedMentions: { repliedUser: false }
+            });
             return;
         }
         weather_embed(location, T1H, Sky, Rain, Pty, Ligtening, Wind_Speed, Wind_Direction, Humidity, Hour_fcst);

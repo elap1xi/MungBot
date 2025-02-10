@@ -1,3 +1,5 @@
+import { userMention } from "discord.js";
+
 const once = false;
 const name = 'messageCreate';
 
@@ -52,7 +54,10 @@ async function execute(message) {
                     .setDescription(result_txt)
                     .setTimestamp()
                     .setFooter({ text: `Source : AVWX, AirporstDB` })
-                await message.channel.send({ embeds: [rwy_embds] });
+                await message.reply({
+                    embeds: [rwy_embds],
+                    allowedMentions: { repliedUser: false }
+                })
                 return;
             } catch (error) {
                 await Send_EMBD.error(message);
@@ -79,11 +84,18 @@ async function execute(message) {
             const a = async (msg) => {
                 const reply = await msg.fetchReference();
                 const isBotMessage = reply.author.id === client.user.id;
-        
+                
+                let repliedContent = reply.content;
+                if(reply.embeds[0]!==undefined){
+                    let embedContents = JSON.stringify(reply.embeds, null, 2);
+                    console.log(embedContents);
+                    repliedContent += `\n\n[Embed Data]\n${embedContents}`;
+                }
+
                 if (!myTurn && isBotMessage) throw new Error("Invalid user turn: Bot's turn in user role.");
                 if (myTurn && !isBotMessage) throw new Error("Invalid assistant turn: User's turn in bot role.");
         
-                chatlog = [{ role: myTurn ? "assistant" : "user", content: reply.content }, ...chatlog];
+                chatlog = [{ role: myTurn ? "assistant" : "user", content: repliedContent }, ...chatlog];
         
                 myTurn = !myTurn;
         
@@ -102,7 +114,8 @@ async function execute(message) {
                     throw new Error("Failed to reconstruct chat.");
                 }
             }
-        
+            
+            console.log(chatlog);
             return chatlog;
         }
         
@@ -337,7 +350,22 @@ async function execute(message) {
                         
                         else {
                             try { // Ai Response
-                                let chatlog = [{ role: "user", content: message.content }];
+                                let content = message.content.trim();
+                                let msg_attachments = [];
+                                if (message.attachments.size > 0) {
+                                    message.attachments.forEach((attachment) => {
+                                        if (attachment.contentType && attachment.contentType.startsWith("image/")) {
+                                            msg_attachments.push({ type: "image_url", image_url: { url: attachment.url }, });
+                                        }
+                                    });
+                                }
+
+                                let chatlog = [
+                                    { role: "user", content: [ { type: "text", text: content }, ...msg_attachments,]
+                                        .filter((item) => item.text || item.image_url),
+                                    },
+                                ];
+
                                 try {
                                     const previousChat = await reconstructChat(message, client);
                                     chatlog = [...previousChat, ...chatlog];

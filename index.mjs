@@ -20,9 +20,7 @@ for (const file of eventFiles) {
 	}
 }
 
-// get information for reply
-let get_info = new cron.CronJob('0 10 * * * *',() => scrap_info());
+let get_info = new cron.CronJob('0 30 * * * *',() => scrap_info());
 get_info.start();
 
-const Token = config.status == "online" ? env.token1 : env.token_test1;
 client.login(Token);

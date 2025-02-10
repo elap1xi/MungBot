@@ -3,7 +3,9 @@ import { createRequire } from "module";
 global.require = createRequire(import.meta.url);
 
 // configuration
-global.config = require('./data/security/config.json');
+const config = require('./data/security/config.json');
+global.pkg = require('./package.json');
+global.config = config;
 
 // import module
 global.axios = require('axios');
@@ -103,12 +105,45 @@ import env from './data/config/conf.mjs';
 global.env = env;
 
 // variable
-global.prefix = config.status == "online" ? config.prefix_main : config.prefix_test;
-global.deploy_log = config.status == "online" ? config.log_main_id : config.log_test_id;
-global.Version = config.status == "online" ? config.current_Version : config.current_Version + ' (beta)';
 global.month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-// prefix
+const Status_CONFIG = {
+    online: {
+        prefix: config.prefix_main,
+        deploy_log: config.log_main_id,
+        Version: pkg.version,
+        Token: env.token1,
+        prefix_rwy: '!rw',
+        prefix_simbrief: '!fp'
+    },
+    test: {
+        prefix: config.prefix_test,
+        deploy_log: config.log_test_id,
+        Version: pkg.version + ' (beta)',
+        Token: env.token_test1,
+        prefix_rwy: '!!rw',
+        prefix_simbrief: '!!fp'
+    },
+    test2: {
+        prefix: config.prefix_test2,
+        deploy_log: config.log_test_id,
+        Version: pkg.version + ' (beta)',
+        Token: env.token_test2,
+        prefix_rwy: '!!rw',
+        prefix_simbrief: '!!fp'
+    }
+}
+
+const cStatus = config.status;
+const SC = Status_CONFIG[cStatus];
+
+global.prefix = SC.prefix;
+global.deploy_log = SC.deploy_log;
+global.Version = SC.version;
+global.Token = SC.Token;
+global.prefix_rwy = SC.prefix_rwy;
+global.prefix_simbrief = SC.prefix_simbrief;
+
 global.prefix_lch = config.status == 'test' ? 'ㄱㅅㅌㅅㅌ' : 'ㄱㅅ';
 global.prefix_lch2 = config.status == 'test' ? 'ㄳㅌㅅㅌ' : 'ㄳ';
 global.prefix_lch3 = config.status == 'test' ? 'ㄴㅇ ㄱㅅㅌㅅㅌ' : 'ㄴㅇ ㄱㅅ';
@@ -116,10 +151,7 @@ global.prefix_lch4 = config.status == 'test' ? 'ㄴㅇ ㄳㅌㅅㅌ' : 'ㄴㅇ �
 global.prefix_lch5 = config.status == 'test' ? 'ㄴㅇㄱㅅㅌㅅㅌ' : 'ㄴㅇㄱㅅ';
 global.prefix_lch6 = config.status == 'test' ? 'ㄴㅇㄳㅌㅅㅌ' : 'ㄴㅇㄳ';
 
-global.prefix_rwy = config.status == 'test' ? '!!rw' : '!rw';
-global.prefix_simbrief = config.status == 'test' ? '!!fp' : '!fp';
-
-// Music Panel Button Components - DEPRECATED ON SERVER
+// Music Panel Button Components - TESTING ON SERVER
 const m_player = new ButtonBuilder()
     .setCustomId('m_player')
     .setLabel('🎧 재생')

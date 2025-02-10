@@ -1,8 +1,6 @@
 async function AI_default_(message, chatlog){
     async function run(message, chatlog) {
-        // let msg_attachments = message.attachments.first() ? message.attachments.first().url : false;
-        
-        let prompt = "디스코드의 '뭉이'라는 이름을 가진 친근하고, 재미있는 채팅봇. 마크다운을 적절히 사용하고 존댓말을 사용할것";
+        let prompt = "디스코드의 '뭉이'라는 이름을 가진 친근하고, 재미있는 채팅봇. 마크다운을 적절히 사용하고 존댓말을 사용할것.";
         chatlog = [{ role: "system", content: prompt }, ...chatlog];
 
         // todo : 대화 40개 제한
