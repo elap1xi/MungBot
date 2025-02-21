@@ -21,6 +21,6 @@ for (const file of eventFiles) {
 }
 
 let get_info = new cron.CronJob('0 30 * * * *',() => scrap_info());
-get_info.start();
+if(config.enableCronjob) get_info.start();
 
 client.login(Token);

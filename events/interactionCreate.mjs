@@ -16,12 +16,18 @@ async function execute(interaction) {
             const author = interaction.user.id;
             const guildId = interaction.guildId;
 
+            if(config.enableSlashCommand){
+                await interaction.reply({
+                    content: 'slash command is not available.'
+                }); return;
+            }
+
             // Metar
             async function get_metar(code){
                 let URL_AVWX = `https://avwx.rest/api/metar/${code}`;
                 let json_avwx = await axios.get(URL_AVWX, {
                     headers:{
-                        'Authorization':config.AVWX_key
+                        'Authorization':privateKey.AVWX_key
                     }
                 })
                 .then(res => res.data)
@@ -447,7 +453,7 @@ async function execute(interaction) {
                 /**학교명 */
                 const sch_input = interaction.fields.getTextInputValue('sch_input');
                 try {
-                    const school_code_jsn = await SubFunction.school_code(sch_input, config.neis_key);   // school code (json)
+                    const school_code_jsn = await SubFunction.school_code(sch_input, privateKey.neis_key);   // school code (json)
                     BotCache.set('LUNCH_INPUT_fO221', sch_input);
                     /**중복되는 학교 갯수 */
                     let ps_json_leng = school_code_jsn.length;
@@ -571,7 +577,7 @@ async function execute(interaction) {
                 var sch_input = BotCache.get('LUNCH_INPUT_fO221')
                 BotCache.flushAll();
                 try {
-                    var ps_json = await SubFunction.school_code(sch_input, config.neis_key);
+                    var ps_json = await SubFunction.school_code(sch_input, privateKey.neis_key);
                     var sch_SCHUL_NM = String(ps_json[0].SCHUL_NM);
                     var sch_ORG_RDNDA = String(ps_json[0].ORG_RDNDA);
                 } catch {
@@ -606,7 +612,7 @@ async function execute(interaction) {
             } else if (interaction.customId == 'BTN_lch_2' || interaction.customId == 'BTN_lch_4' || interaction.customId == 'BTN_lch_7') {
                 var sch_input = BotCache.get('LUNCH_INPUT_fO221');
                 BotCache.flushAll();
-                var ps_json = await SubFunction.school_code(sch_input, config.neis_key);
+                var ps_json = await SubFunction.school_code(sch_input, privateKey.neis_key);
                 var sch_SCHUL_NM = String(ps_json[1].SCHUL_NM);
                 var sch_ORG_RDNDA = String(ps_json[1].ORG_RDNDA);
                 SubFunction.Lunch_input(author, sch_SCHUL_NM, 1);
@@ -633,7 +639,7 @@ async function execute(interaction) {
             } else if (interaction.customId == 'BTN_lch_5' || interaction.customId == 'BTN_lch_8') {
                 var sch_input = BotCache.get('LUNCH_INPUT_fO221');
                 BotCache.flushAll();
-                var ps_json = await SubFunction.school_code(sch_input, config.neis_key);
+                var ps_json = await SubFunction.school_code(sch_input, privateKey.neis_key);
                 var sch_SCHUL_NM = String(ps_json[2].SCHUL_NM);
                 var sch_ORG_RDNDA = String(ps_json[2].ORG_RDNDA);
                 SubFunction.Lunch_input(author, sch_SCHUL_NM, 2);
@@ -660,7 +666,7 @@ async function execute(interaction) {
             } else if (interaction.customId == 'BTN_lch_9') {
                 var sch_input = BotCache.get('LUNCH_INPUT_fO221');
                 BotCache.flushAll();
-                var ps_json = await SubFunction.school_code(sch_input, config.neis_key);
+                var ps_json = await SubFunction.school_code(sch_input, privateKey.neis_key);
                 var sch_SCHUL_NM = String(ps_json[3].SCHUL_NM);
                 var sch_ORG_RDNDA = String(ps_json[3].ORG_RDNDA);
                 SubFunction.Lunch_input(author, sch_SCHUL_NM, 3);

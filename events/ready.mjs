@@ -3,7 +3,11 @@ const once = true;
 const name = 'ready';
 
 async function execute(client) {
-	let date = new Date();
+    let date = new Date();
+    if(config.startWithDebug){
+        console.log('Debugging Modules..');
+        await Function.module_debug();
+    }
 	console.log('Bot Ready');
 	console.log(`Logged in as ${client.user.tag}`);
 	console.log('==========================================');

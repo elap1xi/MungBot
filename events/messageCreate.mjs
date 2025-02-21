@@ -2,12 +2,14 @@ const once = false;
 const name = 'messageCreate';
 
 async function execute(message) {
-    Function.logger(message);
-    if (message.author.bot) return;
-
     const client = message.client;
-    const content = (message.content);
+    const content = message.content;
     const author = message.author.id;
+
+    Function.logger(message);
+    if (!config.allowReplyWithBot && message.author.bot) return;
+    if (config.replyWithAdminOnly && author=='602721036852527104') return;
+
     var contentArr = content.split(" ");
     var leng = contentArr.length;
     var pre = contentArr[0];
@@ -15,44 +17,12 @@ async function execute(message) {
     var command_2 = contentArr[2];
 
     try {
-        // Lunch Handle
-        async function lunch_reply(message, content, author) {
-            try {
-                await Function.lunch(message, content, author);
-                return;
-            } catch (error) {
-                await Send_EMBD.error(message);
-                webhookclient_Error.send({
-                    content: '**Lunch ERROR**\n```' + error.stack + '```'
-                });
-                return;
-            }
-        }
-
         // Runway Info Handle
         if (content.startsWith(prefix_rwy)) {
             await message.channel.sendTyping();
-            const icao = ((content.replace(prefix_rwy, "")).replace(/\s/g, "")).toUpperCase();
-            try {
-                let Result = await Function.rwy_info(icao, config.AVWX_key, config.AirportDB_Key, "Normal");
-                let result_txt = String(Result.join('\n'));
-                const rwy_embds = new EmbedBuilder()
-                    .setColor(0xffffff).setTitle(`${icao} Runway Info`)
-                    .setDescription(result_txt)
-                    .setTimestamp()
-                    .setFooter({ text: `Source : AVWX, AirporstDB` })
-                await message.reply({
-                    embeds: [rwy_embds],
-                    allowedMentions: { repliedUser: false }
-                })
-                return;
-            } catch (error) {
-                await Send_EMBD.error(message);
-                webhookclient_Error.send({
-                    content: '**Runway INFO ERROR**\n```' + error.stack + '```'
-                });
-                return;
-            }
+            let icao = ((content.replace(prefix_rwy, "")).replace(/\s/g, "")).toUpperCase();
+            await Function.rwy_info(message, icao, "Normal");
+            return;
         }
 
         // Simbrief Info Handle
@@ -75,21 +45,19 @@ async function execute(message) {
                 let repliedContent = reply.content;
                 if(reply.embeds[0]!==undefined){
                     let embedContents = JSON.stringify(reply.embeds, null, 2);
-                    console.log(embedContents);
                     repliedContent += `\n\n[Embed Data]\n${embedContents}`;
                 }
 
-                if (!myTurn && isBotMessage) throw new Error("Invalid user turn: Bot's turn in user role.");
-                if (myTurn && !isBotMessage) throw new Error("Invalid assistant turn: User's turn in bot role.");
+                if (!myTurn && isBotMessage) throw new Error("Invalid user turn");
+                if (myTurn && !isBotMessage) throw new Error("Invalid assistant turn");
         
                 chatlog = [{ role: myTurn ? "assistant" : "user", content: repliedContent }, ...chatlog];
         
                 myTurn = !myTurn;
-        
                 if (reply.type === MessageType.Reply) {
                     await a(reply);
                 } else if (isBotMessage) {
-                    throw new Error("Invalid end turn: Bot message is the last.");
+                    throw new Error("Invalid end turn");
                 }
             };
         
@@ -102,14 +70,13 @@ async function execute(message) {
                 }
             }
             
-            console.log(chatlog);
             return chatlog;
         }
         
         if (message.mentions.users.has(client.user.id) && !message.author.bot){
             await message.channel.sendTyping();
 
-            let chatlog = [{ role: "user", content: message.content }];
+            let chatlog = [{ role: "user", content: content }];
 
             try {
                 const previousChat = await reconstructChat(message, client);
@@ -119,7 +86,6 @@ async function execute(message) {
                 return;
 
             } catch (err) {
-                console.error("Error handling AI response:", err);
                 await message.reply({
                     content: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
                     allowedMentions: { repliedUser: false }
@@ -131,17 +97,18 @@ async function execute(message) {
         // prefix detect
         if (pre.startsWith(prefix)) {
             await message.channel.sendTyping();
-
             let RTN_value = await SubFunction.contentRequest(content);
 
             if (RTN_value == '1') {   // School Lunch Menu
-                lunch_reply(message, content, author);
+                await Function.lunch(message, content, author);
                 return;
             }
 
             else if (RTN_value == '2') {  // Current Version
-                message.channel.send('현재 버전은 `' + Version + '`이에요!');
-                return;
+                message.reply({
+                    content: '현재 버전은 `' + Version + '`이에요!',
+                    allowedMentions: { repliedUser: false }
+                }); return;
             }
 
             else if (RTN_value == '3') {   // Rv.Han Temperature
@@ -164,7 +131,7 @@ async function execute(message) {
                 return;
             }
 
-            else if (RTN_value == '9') {    // 
+            else if (RTN_value == '9') {    // plan simbrief - beta
                 await AI.AI_brief(message);
                 return;
             }
@@ -176,7 +143,7 @@ async function execute(message) {
             } else {
                 if (SubFunction.dictionary_default(command_1) === undefined) {
                     if (SubFunction.dictionary_default(command_2) === undefined) {
-                        // Music Controller - deprecated on server
+                        // Music Controller - testing on server
                         if (command_1 == "셋업") {
                             const guild = message.guild;
                             const channelName = '🎧ㆍ뭉이음악채널';
@@ -197,28 +164,32 @@ async function execute(message) {
                                 message.reply({
                                     content: '#🎧ㆍ뭉이음악채널 이 이미 존재해요',
                                     allowedMentions: { repliedUser: false }
-                                });
-                                return;
+                                }); return;
                             }
 
                             message.reply({
                                 content: '채널이 생성되었어요 #🎧ㆍ뭉이음악채널',
                                 allowedMentions: { repliedUser: false }
-                            });
-                            return;
+                            }); return;
                         }
 
                         // Ping
-                        if (command_1 == "핑") {
-                            message.channel.send(`ping : ${Date.now() - message.createdTimestamp}ms / API : ${Math.round(client.ws.ping)}`)
+                        else if (command_1 == "핑") {
+                            message.reply({
+                                content: `ping : ${Date.now() - message.createdTimestamp}ms / API : ${Math.round(client.ws.ping)}`,
+                                allowedMentions: { repliedUser: false }
+                            }); return;
                         }
 
-                        else if (command_1 == "정리") {
-                            let amount = command_2;
-                            let messages = await message.channel.messages.fetch({ limit: Number(amount) + 1 });
-                            await message.channel.bulkDelete(messages);
-                            await message.channel.send(`최근 ${amount}개의 메시지가 삭제되었습니다.`);
-                        }
+                        // else if (command_1 == "정리") {
+                        //     let amount = command_2;
+                        //     let messages = await message.channel.messages.fetch({ limit: Number(amount) + 1 });
+                        //     await message.channel.bulkDelete(messages);
+                        //     await message.reply({
+                        //         content: `최근 ${amount}개의 메시지가 삭제되었습니다.`,
+                        //         allowedMentions: { repliedUser: false }
+                        //     }); return;
+                        // }
 
                         // Choice
                         else if (command_1 == "골라") {
@@ -228,20 +199,17 @@ async function execute(message) {
                             } else {
                                 result_choice = (contentArr.slice(2, leng))[Math.floor((contentArr.slice(2, leng)).length * Math.random())];
                             }
-                            message.reply(result_choice);
-                        } else if (command_1.startsWith("골라") && (command_1.split("")).length !== 2) {
-                            result_choice = (contentArr.slice(3, leng))[Math.floor((contentArr.slice(3, leng)).length * Math.random())];
-                            message.reply(result_choice);
+                            message.reply({
+                                content: result_choice,
+                                allowedMentions: { repliedUser: false }
+                            }); return;
                         }
 
                         // Papago Translate
                         else if (command_1 == "번역" || contentArr[leng - 1] == "번역") {
                             var query;
-                            if (command_1 == "번역") {
-                                query = (contentArr.slice(2, leng)).join(" ");
-                            } else {
-                                query = (contentArr.slice(1, leng - 1)).join(" ");
-                            }
+                            if (command_1 == "번역") query = (contentArr.slice(2, leng)).join(" ");
+                            else query = (contentArr.slice(1, leng - 1)).join(" ");
 
                             async function rep(text, origin, target) {
                                 const papago_embed = new EmbedBuilder()
@@ -252,34 +220,31 @@ async function execute(message) {
                                         { name: "변역 결과", value: '``' + text + '``', inline: true }
                                     )
                                     .setFooter({ text: '번역 제공 및 언어감지 : 국내산 앵무새 | Papago ⓒ NAVER Corp ' });
-                                message.channel.send({ embeds: [papago_embed] });
-                            }
-
-                            async function errc(error) {
-                                await Send_EMBD.error(message);
-                                webhookclient_Error.send({
-                                    content: '**Papago Translate ERROR**\n```' + error.stack + '```'
-                                });
+                                message.reply({ 
+                                    embeds: [papago_embed],
+                                    allowedMentions: { repliedUser: false }
+                                }); return;
                             }
 
                             axios.get("https://playentry.org/api/expansionBlock/papago/dect/langs?query=" + query)
-                                .then(res => res.data)
-                                .then(json => {
-                                    let origin = json.langCode;
-                                    let target = origin == "ko" ? "en" : "ko";
-                                    var text;
-                                    async function get() {
-                                        if (json.langCode == "ko") {
-                                            text = await SubFunction.PAPAGO_translate(query, "en");
-                                            rep(text, origin, target);
-                                        } else {
-                                            text = await SubFunction.PAPAGO_translate(query, "ko");
-                                            rep(text, origin, target);
-                                        }
+                            .then(res => res.data)
+                            .then(json => {
+                                let origin = json.langCode;
+                                let target = origin == "ko" ? "en" : "ko";
+                                var text;
+                                async function get() {
+                                    if (json.langCode == "ko") {
+                                        text = await SubFunction.PAPAGO_translate(query, "en");
+                                        rep(text, origin, target);
+                                    } else {
+                                        text = await SubFunction.PAPAGO_translate(query, "ko");
+                                        rep(text, origin, target);
                                     }
-                                    get();
-                                })
-                                .catch(error => errc(error));
+                                }
+                                get();
+                            }).catch(error => {
+                                errorHandler.log_Error('**Papago Translate ERROR**\n```' + error.stack + '```');
+                            });
 
                         }
 
@@ -291,7 +256,8 @@ async function execute(message) {
                         
                         else {
                             try { // Ai Response
-                                let content = message.content.trim();
+                                if(config.callBotwithMentionOnly) return;
+                                let content = content.trim();
                                 let msg_attachments = [];
                                 if (message.attachments.size > 0) {
                                     message.attachments.forEach((attachment) => {
@@ -314,7 +280,6 @@ async function execute(message) {
                                     await AI.AI_default(message, chatlog);
                                     return;
                                 } catch (err) {
-                                    console.error("Error handling AI response:", err);
                                     await message.reply({
                                         content: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
                                         allowedMentions: { repliedUser: false }
@@ -322,17 +287,26 @@ async function execute(message) {
                                 }
                             } catch (error) {
                                 webhookclient_Error.send({
-                                    content: '**AI ERROR**\n```' + error.stack + '```'
+                                    content: '**AI Error**\n```' + error.stack + '```'
                                 });
-                                message.channel.send(SubFunction.random_NaN(1));
+                                message.reply({
+                                    content: SubFunction.random_NaN(1),
+                                    allowedMentions: { repliedUser: false }
+                                });
                             }
                         }
 
                     } else {
-                        message.channel.send(SubFunction.dictionary_default(command_2));
+                        message.reply({
+                            content: SubFunction.dictionary_default(command_2),
+                            allowedMentions: { repliedUser: false }
+                        });
                     }
                 } else {
-                    message.channel.send(SubFunction.dictionary_default(command_1));
+                    message.reply({
+                        content: SubFunction.dictionary_default(command_1),
+                        allowedMentions: { repliedUser: false }
+                    });
                 }
             }
         }

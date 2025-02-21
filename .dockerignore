@@ -2,7 +2,7 @@
 /Test
 /archived
 /cache
-/data/security/config.json
+/data/security/private.json
 .env
 
 .git

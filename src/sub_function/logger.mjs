@@ -36,7 +36,7 @@ const sendLogToWebhook = async (content, files, webhookLink, message) => {
 };
 
 export async function logger_(message){
-    if(config.status !== "online") return;
+    if(config.status !== "main") return;
 
     let ll = {
         "1313522205614805033": webhookclient_K1,

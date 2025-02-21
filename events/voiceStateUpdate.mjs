@@ -6,6 +6,7 @@ async function execute(oldState, newState) {
     if(config.status == "test") return;
     if(newState.guild.id !== "1226196255605002292") return;
 
+    // add time
     let date = new Date();
     let dateOption = { timeZone: 'Asia/Seoul', hour12: false };
 	if (!oldState.channel && newState.channel) {

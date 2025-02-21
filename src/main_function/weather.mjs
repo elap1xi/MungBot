@@ -1,7 +1,6 @@
 
 async function weather_(message){
     let content = message.content;
-    let author = message.author;
     try {
         content = content.replace(`${prefix} `,"").replace(`날씨`," ");
         var location_value = await Location.get_info(content);
@@ -53,7 +52,7 @@ async function weather_(message){
         
         var frst_base_date = `${Year}${month}${day}`;
         var frst_base_time = `${hour}${min}`;
-        var url = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=${config.apis_data_fcst_key}&dataType=JSON&numOfRows=100&pageNo=1&base_date=${frst_base_date}&base_time=${frst_base_time}&nx=${loc_arr[1]}&ny=${loc_arr[2]}`;
+        var url = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=${privateKey.apis_data_fcst_key}&dataType=JSON&numOfRows=100&pageNo=1&base_date=${frst_base_date}&base_time=${frst_base_time}&nx=${loc_arr[1]}&ny=${loc_arr[2]}`;
 
         var data = await SubFunction.weather(url);
         if((String(Hour+1)).length==1){ Hour_fcst = `0${Hour+1}`; }
@@ -131,7 +130,10 @@ async function weather_(message){
         }
         weather_embed(location, T1H, Sky, Rain, Pty, Ligtening, Wind_Speed, Wind_Direction, Humidity, Hour_fcst);
     } catch(error) {
-        message.channel.send("알 수 없는 에러가 발생했어요 :(");
+        message.reply({
+            content: "알 수 없는 에러가 발생했어요.",
+            allowedMentions: { repliedUser: false }
+        });
         webhookclient_Error.send({
             content: '**Weather INFO ERROR**\n```'+error.stack+'```'
         });

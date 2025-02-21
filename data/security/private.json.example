@@ -1,0 +1,32 @@
+{
+    "prefix_main" : "뭉이야",
+    "prefix_test" : "",
+    "prefix_test2" : "",
+
+    "clientId" : "",
+    "clientId_sub" : "",
+
+    "log_main_id" : "",
+    "log_test_id" : "",
+
+    "log_error" : "",
+    "log_viewchannel_k1" : "",
+    "log_viewchannel_k2" : "",
+    "log_viewchannel_k3" : "",
+    "log_voicejoin_k" : "",
+    "log_gen" : "",
+    
+    "neis_key" : "",
+    "AirportDB_Key" : "",
+    "AVWX_key" : "",
+    "exchg_key" : "",
+    "apis_data_fcst_key" : "",
+    "X_Naver_Client_Id" : "",
+    "X_Naver_Client_Secret" : "",
+    "google_ai_key" : "",
+    "openai" : "",
+    "bitlyid" : "",
+    "bitlytoken" : "",
+    "MongoDBID": "",
+    "MongoDBKEY": ""
+}

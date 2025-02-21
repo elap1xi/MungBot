@@ -1,0 +1,11 @@
+{
+    "status" : "test",
+
+    "startWithDebug": true,
+    "allowReplyWithBot": false,
+    "replyWithAdminOnly": false,
+    "messageSortWithoutAI": true,
+    "enableCronjob": true,
+    "enableSlashCommand": true,
+    "callBotwithMentionOnly": false
+}

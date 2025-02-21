@@ -8,28 +8,6 @@ export async function contentRequest(content) {
 }
 
 /**
- * 문자열의 모든 영문표기 숫자를 아라비아숫자 표기로 변환
- * @param {string} text 
- */
-export function convertToArabicNumber(text) {
-  const words = text.split(' ');
-  const convertedWords = words.map(word => {
-    if (num[word]) {
-      return num[word].toString();
-    }
-    return word;
-  });
-  return convertedWords.join(' ');
-}
-
-export function contentRequest_Regex(content) {
-  let regexKey_convert = /How\smany\s/gm;
-  if(content.match(regexKey_convert)){
-    return 7;
-  }
-}
-
-/**
  * @param {string} content 문장(영어) 
  * @param {string} content_kr 문장(한글)
  * @returns 문장 내의 날짜 관련 단어를 검사하여 현재로부터의 상대적인 일수 차를 반환
@@ -290,7 +268,7 @@ export async function weather(url){
 // Hangang temp
 export async function han_gang_temp() {
   async function ps() {
-    let json = await axios.get(`https://api.hangang.msub.kr/`)
+    let json = await axios.get(`https://api.ivl.is/hangangtemp/`)
       .then(res => res.data)
     return json;
   }
@@ -336,10 +314,10 @@ export async function bitly_url(url) {
     const response = await fetch('https://api-ssl.bitly.com/v4/shorten', {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${config.bitlytoken}`,
+            'Authorization': `Bearer ${privateKey.bitlytoken}`,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ "long_url": url, "domain": "bit.ly", "group_guid": config.bitlyid })
+        body: JSON.stringify({ "long_url": url, "domain": "bit.ly", "group_guid": privateKey.bitlyid })
     });
     return response.json();
 }

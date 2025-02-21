@@ -6,17 +6,18 @@ import fs from 'node:fs';
 import { REST, Routes } from 'discord.js'; 
 import env from '../data/config/conf.mjs';
 const config = require('../data/config/config.json');
-const clientid = config.status == "online" ? config.clientId : config.clientId_sub;
-const Token = config.status == "online" ? env.token1 : env.token_test1;
+const privateKey = require('../data/security/private.json');
+const clientid = config.status == "main" ? privateKey.clientId : privateKey.clientId_sub;
+const Token = config.status == "main" ? env.token1 : env.token_test1;
 
 const commands = [];
 // Grab all the command files from the commands directory you created earlier
-const commandFiles = fs.readdirSync('../events/commands').filter(file => file.endsWith('.mjs'));
+const commandFiles = fs.readdirSync('./events/commands').filter(file => file.endsWith('.mjs'));
 
 // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 for (const file of commandFiles) {
 	const command = await import(`../events/commands/${file}`);
-	console.log(file);
+	console.log('- '+file);
 	commands.push(command.create());
 }
 
@@ -44,7 +45,6 @@ const rest = new REST({ version: '10' }).setToken(Token);
 			console.log(`Successfully reloaded ${data.length} application (/) commands.`);
 			
 		} catch (error) {
-		// And of course, make sure you catch and log any errors!
 		console.error(error);
 	}
 })();

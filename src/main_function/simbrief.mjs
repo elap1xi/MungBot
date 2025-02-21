@@ -1,4 +1,3 @@
-import { Component } from "discord.js";
 
 async function SimBrief_(message, user){
     try {

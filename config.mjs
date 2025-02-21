@@ -3,9 +3,11 @@ import { createRequire } from "module";
 global.require = createRequire(import.meta.url);
 
 // configuration
-const config = require('./data/security/config.json');
-global.pkg = require('./package.json');
+const privateKey = require('./data/security/private.json');
+const config = require('./data/config/config.json');
+global.privateKey = privateKey;
 global.config = config;
+global.pkg = require('./package.json');
 
 // import module
 global.axios = require('axios');
@@ -28,7 +30,7 @@ global.__dirname = dirname(__filename);
 // Data - MongoDB, NodeCache
 const { MongoClient } = require('mongodb');
 const NodeCache = require('node-cache');
-global.mclient = new MongoClient(`mongodb+srv://${config.MongoDBID}:${config.MongoDBKEY}@data.nfhlde4.mongodb.net/?retryWrites=true&w=majority&appName=data`);
+global.mclient = new MongoClient(`mongodb+srv://${privateKey.MongoDBID}:${privateKey.MongoDBKEY}@data.nfhlde4.mongodb.net/?retryWrites=true&w=majority&appName=data`);
 global.BotCache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 global.BotCache_info = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 global.BotCache_news = new NodeCache({ stdTTL: 100, checkperiod: 120 });
@@ -68,35 +70,31 @@ global.createAudioPlayer = createAudioPlayer;
 global.createAudioResource = createAudioResource;
 global.AudioPlayerStatus = AudioPlayerStatus;
 
-// google gemini
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-global.genAI = new GoogleGenerativeAI(config.google_ai_key);
-global.model = genAI.getGenerativeModel({ model: "gemini-1.0-pro"});
-
 // GPT api
 import OpenAI from "openai";
-global.openai = new OpenAI({ apiKey: config.openai });
+global.openai = new OpenAI({ apiKey: privateKey.openai });
 
 // webhook
-global.webhookclient_Error = new WebhookClient({ url: config.log_error });
-global.webhookclient_gen0 = new WebhookClient({ url: config.log_gen });
-global.webhookclient_K1 = new WebhookClient({ url: config.log_viewchannel_k1 });
-global.webhookclient_K2 = new WebhookClient({ url: config.log_viewchannel_k2 });
-global.webhookclient_K3 = new WebhookClient({ url: config.log_viewchannel_k3 });
-global.webhookclient_voice_k = new WebhookClient({ url: config.log_voicejoin_k });
+global.webhookclient_deploy = new WebhookClient({ url: privateKey.log_deploy });
+global.webhookclient_Error = new WebhookClient({ url: privateKey.log_error });
+global.webhookclient_gen0 = new WebhookClient({ url: privateKey.log_gen });
+global.webhookclient_K1 = new WebhookClient({ url: privateKey.log_viewchannel_k1 });
+global.webhookclient_K2 = new WebhookClient({ url: privateKey.log_viewchannel_k2 });
+global.webhookclient_K3 = new WebhookClient({ url: privateKey.log_viewchannel_k3 });
+global.webhookclient_voice_k = new WebhookClient({ url: privateKey.log_voicejoin_k });
 
 // import File
 import * as Function from './src/ExportFunction.mjs';
 import * as SubFunction from './src/function.mjs';
 import * as AI from './src/main_function/AI/aiExport.mjs';
-import * as Send_EMBD from './src/sub_function/send_embed.mjs';
+import * as errorHandler from './src/sub_function/errorHandler.mjs';
 import * as Location from './src/sub_function/location.mjs';
 import scrap_info from './src/sub_function/info_scrapper.mjs';
 
 global.Function = Function;
 global.SubFunction = SubFunction;
 global.AI = AI;
-global.Send_EMBD = Send_EMBD;
+global.errorHandler = errorHandler;
 global.Location = Location;
 global.scrap_info = scrap_info;
 
@@ -108,25 +106,25 @@ global.env = env;
 global.month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const Status_CONFIG = {
-    online: {
-        prefix: config.prefix_main,
-        deploy_log: config.log_main_id,
+    main: {
+        prefix: privateKey.prefix_main,
+        deploy_log: privateKey.log_main_id,
         Version: pkg.version,
         Token: env.token1,
         prefix_rwy: '!rw',
         prefix_simbrief: '!fp'
     },
     test: {
-        prefix: config.prefix_test,
-        deploy_log: config.log_test_id,
+        prefix: privateKey.prefix_test,
+        deploy_log: privateKey.log_test_id,
         Version: pkg.version + ' (beta)',
         Token: env.token_test1,
         prefix_rwy: '!!rw',
         prefix_simbrief: '!!fp'
     },
     test2: {
-        prefix: config.prefix_test2,
-        deploy_log: config.log_test_id,
+        prefix: privateKey.prefix_test2,
+        deploy_log: privateKey.log_test_id,
         Version: pkg.version + ' (alpha)',
         Token: env.token_test2,
         prefix_rwy: '!!!rw',

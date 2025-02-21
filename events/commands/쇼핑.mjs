@@ -42,8 +42,8 @@ const execute = (interaction) => {
             const url = `https://openapi.naver.com/v1/search/shop.json?query=`+encodeURI(query)+`&display=100&start=1&sort=sim&exclue=used:rental`;
             axios.get(url, {
                 headers: {
-                    'X-Naver-Client-Id' : config.X_Naver_Client_Id,
-                    'X-Naver-Client-Secret' : config.X_Naver_Client_Secret
+                    'X-Naver-Client-Id' : privateKey.X_Naver_Client_Id,
+                    'X-Naver-Client-Secret' : privateKey.X_Naver_Client_Secret
                 }
             })
             .then(res => res.data)
