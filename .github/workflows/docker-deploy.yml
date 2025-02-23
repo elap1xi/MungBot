@@ -51,7 +51,8 @@ jobs:
              --name mungR \
              --restart on-failure \
              -v $(pwd)/.env:/usr/src/app/.env \
-             -v $(pwd)/config.json:/usr/src/app/data/security/config.json \
+             -v $(pwd)/.env:/usr/src/app/app_command/.env \
+             -v $(pwd)/private.json:/usr/src/app/data/security/private.json \
              elap1/mungbot:latest
           EOF
       
@@ -70,7 +71,8 @@ jobs:
              --name mungR_B \
              --restart on-failure \
              -v $(pwd)/.env:/usr/src/app/.env \
-             -v $(pwd)/config.json:/usr/src/app/data/security/config.json \
+             -v $(pwd)/.env:/usr/src/app/app_command/.env \
+             -v $(pwd)/private.json:/usr/src/app/data/security/private.json \
              elap1/mungbot:beta
           EOF
     
