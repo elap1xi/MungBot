@@ -1,6 +1,7 @@
 /node_modules
 /cache
 /data/security/*.json
+/data/config/*.json
 .env
 
 /archived

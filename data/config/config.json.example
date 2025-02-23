@@ -1,5 +1,5 @@
 {
-    "status" : "test",
+    "status" : "main",
 
     "startWithDebug": true,
     "allowReplyWithBot": false,

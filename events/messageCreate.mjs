@@ -257,7 +257,7 @@ async function execute(message) {
                         else {
                             try { // Ai Response
                                 if(config.callBotwithMentionOnly) return;
-                                let content = content.trim();
+                                let contentAi = content.trim();
                                 let msg_attachments = [];
                                 if (message.attachments.size > 0) {
                                     message.attachments.forEach((attachment) => {
@@ -268,7 +268,7 @@ async function execute(message) {
                                 }
 
                                 let chatlog = [
-                                    { role: "user", content: [ { type: "text", text: content }, ...msg_attachments,]
+                                    { role: "user", content: [ { type: "text", text: contentAi }, ...msg_attachments,]
                                         .filter((item) => item.text || item.image_url),
                                     },
                                 ];
