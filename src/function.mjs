@@ -4,7 +4,22 @@ const num = { 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 's
 const month_Num = { 'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12 };
   
 export async function contentRequest(content) {
-    return await AI.AI_sort(content);
+    if(!config.messageSortWithoutAI) return await AI.AI_sort(content);
+    else {
+        const keywords = new Map();
+            keywords.set('식단', 1).set('급식', 1);
+            keywords.set('버전', 2);
+            keywords.set('한강', 3);
+            keywords.set('날씨', 4);
+            keywords.set('환율', 5);
+            keywords.set('위성사진', 6);
+            keywords.set('뉴스', 7);
+        for (let [keyword, value] of keywords) {
+            if (content.indexOf(keyword) !== -1) {
+                return value;
+            }
+        }
+    }
 }
 
 /**
