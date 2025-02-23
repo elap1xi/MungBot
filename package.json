@@ -4,7 +4,7 @@
     "main": "index.mjs",
     "scripts": {
         "scp_bot": "scp -i C:/Users/elap1/.ssh/ssh-key-2024-11-07_bot.key ./cache/private.json ./cache/config.json ./cache/.env ubuntu@152.69.231.22:/home/ubuntu/docker_mung",
-        "scp_nyj": "scp -P 30000 -i C:/Users/elap1/.ssh/second.key ./cache/private.json ./cache/.env ubuntu@125.187.34.9:/home/ubuntu/docker_mung",
+        "scp_nyj": "scp -P 30000 -i C:/Users/elap1/.ssh/second.key ./cache/private.json ./cache/config.json ./cache/.env ubuntu@125.187.34.9:/home/ubuntu/docker_mung",
         "reg_sc": "node ./app_command/slash_command_del.js && node ./app_command/slash_command.mjs"
     },
     "engines": {
