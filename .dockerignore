@@ -3,6 +3,7 @@
 /archived
 /cache
 /data/security/private.json
+/data/config/config.json
 .env
 
 .git
