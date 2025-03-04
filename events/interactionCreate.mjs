@@ -16,7 +16,7 @@ async function execute(interaction) {
             const author = interaction.user.id;
             const guildId = interaction.guildId;
 
-            if(config.enableSlashCommand){
+            if(!config.enableSlashCommand){
                 await interaction.reply({
                     content: 'slash command is not available.'
                 }); return;
